@@ -15,7 +15,8 @@ import {
   verifyDeliveryOtp,
   verifyPayment,
   getTodayDeliveries,
-  getAllTimeEarnings
+  getAllTimeEarnings,
+  reorder
 } from "../controllers/order.controllers.js";
 
 const orderRouter = express.Router();
@@ -25,6 +26,7 @@ orderRouter.post("/verify-payment", isAuth, verifyPayment);
 orderRouter.get("/my-orders", isAuth, getMyOrders);
 orderRouter.post("/update-status/:orderId/:shopId", isAuth, updateOrderStatus);
 orderRouter.get("/get-assignment", isAuth, getDeliveryBoyAssignment);
+orderRouter.get("/get-pending-assignments", isAuth, getDeliveryBoyAssignment); // Added route for pending assignments
 orderRouter.get("/get-current-order", isAuth, getCurrentOrder);
 orderRouter.post('/accept-order/:assignmentId', isAuth, acceptOrder); 
 orderRouter.get("/debug/all-assignments", isAuth, getAllAssignments);
@@ -36,4 +38,5 @@ orderRouter.post("/verify-delivery-otp", isAuth, verifyDeliveryOtp);
 orderRouter.post("/get-today-deliveries", isAuth, getTodayDeliveries);
 orderRouter.get("/get-today-deliveries", isAuth, getTodayDeliveries);
 orderRouter.get("/get-all-time-earnings", isAuth, getAllTimeEarnings);
+orderRouter.post("/reorder/:orderId", isAuth, reorder);
 export default orderRouter;

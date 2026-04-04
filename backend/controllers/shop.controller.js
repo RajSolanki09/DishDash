@@ -1,5 +1,6 @@
 import Shop from "../models/shop.model.js";
 import Item from "../models/item.model.js";
+import Order from "../models/order.model.js";
 import uploadOnCloudinary from "../utils/cloudinary.js";
 
 export const createEditShop = async (req, res) => {
@@ -143,4 +144,90 @@ export const getShopDetails = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Error fetching shop details", error });
   }
+};
+
+export const toggleShopStatus = async (req, res) => {
+  try {
+    const shop = await Shop.findOne({ owner: req.userId });
+    if (!shop) return res.status(404).json({ message: "Shop not found" });
+
+    shop.isOpen = !shop.isOpen;
+    await shop.save();
+
+    await shop.populate([
+      { path: 'owner', select: '-password' },
+      { path: 'items', options: { sort: { updatedAt: -1 } } }
+    ]);
+
+    res.status(200).json({ success: true, isOpen: shop.isOpen, shop });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to toggle shop status" });
+  }
+};
+
+export const getShopAnalytics = async (req, res) => {
+    try {
+        const shop = await Shop.findOne({ owner: req.userId });
+        if (!shop) return res.status(404).json({ success: false, message: "Shop not found" });
+
+        // Calculate Revenue and Orders
+        const allOrders = await Order.find({ "shopOrders.shop": shop._id, "shopOrders.status": "delivered" });
+        
+        let totalRevenue = 0;
+        let totalOrders = allOrders.length;
+        
+        // Last 7 days chart data
+        const chartData = [];
+        for (let i = 6; i >= 0; i--) {
+            const date = new Date();
+            date.setDate(date.getDate() - i);
+            const dateString = date.toLocaleDateString('en-US', { weekday: 'short' });
+            
+            const dayOrders = allOrders.filter(o => {
+                const orderDate = new Date(o.createdAt);
+                return orderDate.toDateString() === date.toDateString();
+            });
+
+            const dayRevenue = dayOrders.reduce((sum, o) => {
+                const shopOrder = o.shopOrders.find(so => so.shop.toString() === shop._id.toString());
+                return sum + (shopOrder?.subTotal || 0);
+            }, 0);
+
+            chartData.push({ name: dateString, revenue: dayRevenue, orders: dayOrders.length });
+            totalRevenue += dayRevenue;
+        }
+
+        // Top Selling Items
+        const itemSales = {};
+        allOrders.forEach(o => {
+            const shopOrder = o.shopOrders.find(so => so.shop.toString() === shop._id.toString());
+            shopOrder?.shopOrderItems.forEach(item => {
+                const itemId = item.item.toString();
+                itemSales[itemId] = (itemSales[itemId] || 0) + item.quantity;
+            });
+        });
+
+        const topItems = await Promise.all(
+            Object.entries(itemSales)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 5)
+                .map(async ([id, qty]) => {
+                    const item = await Item.findById(id).select('name image price');
+                    return { ...item?.toObject(), sales: qty };
+                })
+        );
+
+        return res.status(200).json({
+            success: true,
+            analytics: {
+                totalRevenue,
+                totalOrders,
+                chartData,
+                topItems
+            }
+        });
+    } catch (error) {
+        console.error("Analytics Error:", error);
+        return res.status(500).json({ success: false, message: "Internal server error" });
+    }
 };

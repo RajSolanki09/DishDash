@@ -1,83 +1,80 @@
 import React from "react";
-import { HiOutlineMinus, HiOutlinePlus } from "react-icons/hi";
-import { IoTrashOutline } from "react-icons/io5";
+import { Minus, Plus, Trash2 } from "lucide-react";
 
 const CartItemCard = ({ data, onIncrease, onDecrease, onRemove }) => {
   return (
-    <div className="group flex items-start sm:items-center gap-4 p-4 bg-white rounded-3xl border border-gray-100 shadow-md shadow-gray-100/60 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-orange-100/40 transition-all duration-300">
+    <div className="group flex items-start sm:items-center gap-5 p-5 glass-card rounded-3xl transition-all duration-300">
 
       {/* ── Image ── */}
-      <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-2xl border border-gray-100 shadow-sm">
+      <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-2xl border border-border bg-bg-tertiary shadow-inner">
         <img
           src={data.image}
           alt={data.name}
-          className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
+          className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
 
       {/* ── Info ── */}
-      <div className="flex flex-1 flex-col justify-between py-0.5 min-w-0">
+      <div className="flex flex-1 flex-col justify-between py-1 min-w-0">
 
         {/* Top row */}
-        <div className="flex justify-between items-start gap-2">
-          <div className="min-w-0">
-            <p className="text-[9px] font-black text-[#ff4d2d] uppercase tracking-[0.22em] mb-1">
+        <div className="flex justify-between items-start gap-3">
+          <div className="min-w-0 flex-1">
+            <p className="text-[10px] font-black text-brand uppercase tracking-widest mb-1.5 opacity-90">
               {data.category || "Delicious"}
             </p>
-            <h3 className="text-[15px] font-black text-gray-900 tracking-tight leading-tight truncate mb-1">
+            <h3 className="text-[16px] font-bold text-text-primary tracking-tight leading-tight truncate mb-1">
               {data.name}
             </h3>
-            <p className="text-[11px] font-semibold text-gray-400">
-              ₹{data.price} <span className="text-gray-300">/ unit</span>
+            <p className="text-[12px] font-medium text-text-secondary">
+              ₹{data.price} <span className="text-text-muted">/ unit</span>
             </p>
           </div>
 
           {/* Remove */}
           <button
             onClick={onRemove}
-            className="shrink-0 w-8 h-8 flex items-center justify-center rounded-xl bg-red-50 border border-red-100 text-red-400 hover:bg-red-500 hover:text-white hover:border-transparent hover:shadow-md active:scale-95 transition-all duration-200 cursor-pointer"
+            className="shrink-0 w-9 h-9 flex items-center justify-center rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500 hover:text-white hover:border-red-500 hover:shadow-[0_0_15px_rgba(239,68,68,0.4)] active:scale-90 transition-all duration-300 cursor-pointer"
             aria-label="Remove item"
           >
-            <IoTrashOutline size={15} />
+            <Trash2 size={16} />
           </button>
         </div>
 
         {/* Bottom row: qty + total */}
-        <div className="mt-4 flex items-center justify-between gap-3 flex-wrap">
+        <div className="mt-5 flex items-center justify-between gap-4 flex-wrap">
 
           {/* Quantity pill */}
-          <div className="flex items-center bg-gray-50 border border-gray-200 rounded-2xl p-1 gap-1">
+          <div className="flex items-center bg-bg-tertiary border border-border rounded-2xl p-1 gap-1 shadow-inner">
             <button
               onClick={onDecrease}
               disabled={data.quantity <= 1}
-              className={`w-8 h-8 flex items-center justify-center rounded-xl transition-all duration-200 ${
+              className={`w-9 h-9 flex items-center justify-center rounded-xl transition-all duration-300 ${
                 data.quantity <= 1
-                  ? "bg-transparent text-gray-300 cursor-not-allowed"
-                  : "bg-white border border-gray-200 text-gray-600 hover:bg-[#ff4d2d] hover:text-white hover:border-transparent hover:shadow-md active:scale-95 cursor-pointer shadow-sm"
+                  ? "bg-transparent text-text-muted cursor-not-allowed"
+                  : "bg-bg-card border border-border text-text-secondary hover:bg-brand hover:text-white hover:border-brand hover:shadow-[0_0_10px_rgba(255,77,45,0.4)] active:scale-95 cursor-pointer"
               }`}
-              aria-label="Decrease quantity"
             >
-              <HiOutlineMinus size={13} />
+              <Minus size={14} />
             </button>
 
-            <span className="w-9 text-center text-sm font-black text-gray-900 select-none">
+            <span className="w-10 text-center text-sm font-black text-text-primary select-none">
               {data.quantity}
             </span>
 
             <button
               onClick={onIncrease}
-              className="w-8 h-8 flex items-center justify-center rounded-xl bg-white border border-gray-200 text-gray-600 hover:bg-[#ff4d2d] hover:text-white hover:border-transparent hover:shadow-md active:scale-95 transition-all duration-200 cursor-pointer shadow-sm"
-              aria-label="Increase quantity"
+              className="w-9 h-9 flex items-center justify-center rounded-xl bg-bg-card border border-border text-text-secondary hover:bg-brand hover:text-white hover:border-brand hover:shadow-[0_0_10px_rgba(255,77,45,0.4)] active:scale-95 transition-all duration-300 cursor-pointer"
             >
-              <HiOutlinePlus size={13} />
+              <Plus size={14} />
             </button>
           </div>
 
           {/* Total */}
-          <div className="flex items-baseline gap-1.5">
-            <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Total</span>
-            <span className="text-xl font-black text-gray-900 tracking-tighter leading-none">
+          <div className="flex flex-col items-end gap-0.5">
+            <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Total</span>
+            <span className="text-xl font-black text-brand-glow tracking-tighter">
               ₹{(data.price * data.quantity).toFixed(0)}
             </span>
           </div>

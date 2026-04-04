@@ -1,10 +1,15 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { io } from "socket.io-client";
 import axios from "axios";
+
+// Dynamically use localhost or network IP based on where the app is opened
+const backendHost = window.location.hostname === "localhost" ? "localhost" : window.location.hostname;
+const defaultBaseUrl = `http://${backendHost}:8000`;
+
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = "http://localhost:8000";
+axios.defaults.baseURL = defaultBaseUrl;
 
 // Actions and Hooks
 import { setSocket } from "./redux/userSlice";
@@ -16,30 +21,43 @@ import useGetItemsByCity from "./hooks/useGetItemsByCity";
 import useGetMyOrders from "./hooks/useGetMyOrder";
 import useUpdateLocation from "./hooks/useUpdateLocation";
 
-// Pages
-import SignUp from "./pages/SignUp";
-import SignIn from "./pages/SignIn";
-import ForgotPassword from "./pages/ForgotPassword";
-import Home from "./pages/Home";
-import CreateEditShop from "./pages/CreateEditShop";
-import AddItem from "./pages/AddItem";
-import EditItem from "./pages/EditItem";
-import CartPage from "./pages/CartPage";
-import CheckOut from "./pages/CheckOut";
-import OrderPlaced from "./pages/OrderPlaced";
-import MyOrders from "./pages/MyOrders";
-import TrackOrderPage from "./pages/TrackOrderPage";
-import Shop from "./pages/Shop";
-import Profile from "./pages/Profile";
-import AboutUs from "./pages/AboutUs";
-import DeliveryDashboard from "./pages/Deliverydashboard";
+// Components (loaded eagerly - small & critical)
+import ErrorBoundary from "./components/ErrorBoundary";
+import PageRouteLoader from "./components/PageRouteLoader";
+import CustomCursor from "./components/CustomCursor";
 
-export const serverUrl = "http://localhost:8000";
+// Pages (lazy loaded - code splitting)
+const Home = lazy(() => import("./pages/Home"));
+const SignUp = lazy(() => import("./pages/SignUp"));
+const SignIn = lazy(() => import("./pages/SignIn"));
+const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
+const Profile = lazy(() => import("./pages/Profile"));
+const AboutUs = lazy(() => import("./pages/AboutUs"));
+const CreateEditShop = lazy(() => import("./pages/CreateEditShop"));
+const AddItem = lazy(() => import("./pages/AddItem"));
+const EditItem = lazy(() => import("./pages/EditItem"));
+const CartPage = lazy(() => import("./pages/CartPage"));
+const CheckOut = lazy(() => import("./pages/CheckOut"));
+const OrderPlaced = lazy(() => import("./pages/OrderPlaced"));
+const MyOrders = lazy(() => import("./pages/MyOrders"));
+const TrackOrderPage = lazy(() => import("./pages/TrackOrderPage"));
+const Shop = lazy(() => import("./pages/Shop"));
+const Favorites = lazy(() => import("./pages/Favorites"));
+const DeliveryBoy = lazy(() => import("./components/DeliveryBoy"));
+const DeliveryDashboard = lazy(() => import("./pages/Deliverydashboard"));
+
+export const serverUrl = defaultBaseUrl;
+
+// Loading fallback wrapper
+const PageLoader = ({ children }) => (
+  <Suspense fallback={<PageRouteLoader />}>
+    {children}
+  </Suspense>
+);
 
 const App = () => {
   const dispatch = useDispatch();
   const { userData } = useSelector((state) => state.user);
-  const [userLocation, setUserLocation] = useState({ lat: null, lon: null });
 
   // Custom Hooks
   useGetCurrentUser();
@@ -54,12 +72,7 @@ const App = () => {
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setUserLocation({
-            lat: position.coords.latitude,
-            lon: position.coords.longitude,
-          });
-        },
+        () => {},
         (error) => console.error("Error getting location:", error),
       );
     }
@@ -78,98 +91,98 @@ const App = () => {
       dispatch(setSocket(socketInstance));
 
       socketInstance.on("connect", () => {
-        console.log("✅ Socket connected successfully! ID:", socketInstance.id);
+        console.log("Socket connected:", socketInstance.id);
         socketInstance.emit("identity", { userID: userData._id });
       });
 
       socketInstance.on("connect_error", (err) => {
-        console.log("❌ Socket Connection Error:", err.message);
+        console.log("Socket Connection Error:", err.message);
       });
     }
 
     return () => {
       if (socketInstance) {
         socketInstance.disconnect();
-        console.log("🔌 Socket Disconnected");
       }
     };
   }, [userData, dispatch]);
 
   return (
-    <Routes>
-      {/* ═══════════════════════════════════════════════════════════
-                PUBLIC ROUTES - Accessible without login
-            ═══════════════════════════════════════════════════════════ */}
-
-      {/* Home route - shows Landing or Dashboard based on login state */}
-      <Route path="/" element={<Home />} />
-
-      {/* Auth routes - redirect to home if already logged in */}
-      <Route
-        path="/signup"
-        element={!userData ? <SignUp /> : <Navigate to="/" />}
-      />
-      <Route
-        path="/signin"
-        element={!userData ? <SignIn /> : <Navigate to="/" />}
-      />
-      <Route
-        path="/forgot-password"
-        element={!userData ? <ForgotPassword /> : <Navigate to="/" />}
-      />
-      <Route
-        path="/profile"
-        element={userData ? <Profile /> : <Navigate to="/signin" />}
-      />
-      <Route path="/about" element={<AboutUs />} />
-      {/* ═══════════════════════════════════════════════════════════
-                PROTECTED ROUTES - Require authentication
-            ═══════════════════════════════════════════════════════════ */}
-      <Route
-        path="/create-edit-shop"
-        element={userData ? <CreateEditShop /> : <Navigate to="/signin" />}
-      />
-      <Route
-        path="/add-item"
-        element={userData ? <AddItem /> : <Navigate to="/signin" />}
-      />
-      <Route
-        path="/edit-item/:itemId"
-        element={userData ? <EditItem /> : <Navigate to="/signin" />}
-      />
-      <Route
-        path="/cart"
-        element={userData ? <CartPage /> : <Navigate to="/signin" />}
-      />
-      <Route
-        path="/checkOut"
-        element={userData ? <CheckOut /> : <Navigate to="/signin" />}
-      />
-      <Route
-        path="/order-placed"
-        element={userData ? <OrderPlaced /> : <Navigate to="/signin" />}
-      />
-      <Route
-        path="/my-orders"
-        element={userData ? <MyOrders /> : <Navigate to="/signin" />}
-      />
-      <Route
-        path="/owner-orders"
-        element={userData ? <MyOrders /> : <Navigate to="/signin" />}
-      />
-       <Route
-        path="/delivery-orders"
-        element={userData ? <DeliveryDashboard /> : <Navigate to="/signin" />}
-      />
-      <Route
-        path="/track-order/:orderId"
-        element={userData ? <TrackOrderPage /> : <Navigate to="/signin" />}
-      />
-      <Route
-        path="/shop/:shopId"
-        element={userData ? <Shop /> : <Navigate to="/signin" />}
-      />
-    </Routes>
+    <ErrorBoundary>
+      <CustomCursor />
+      <Routes>
+        <Route path="/" element={<PageLoader><Home /></PageLoader>} />
+        <Route
+          path="/signup"
+          element={!userData ? <PageLoader><SignUp /></PageLoader> : <Navigate to="/" />}
+        />
+        <Route
+          path="/signin"
+          element={!userData ? <PageLoader><SignIn /></PageLoader> : <Navigate to="/" />}
+        />
+        <Route
+          path="/forgot-password"
+          element={!userData ? <PageLoader><ForgotPassword /></PageLoader> : <Navigate to="/" />}
+        />
+        <Route
+          path="/profile"
+          element={userData ? <PageLoader><Profile /></PageLoader> : <Navigate to="/signin" />}
+        />
+        <Route path="/about" element={<PageLoader><AboutUs /></PageLoader>} />
+        <Route
+          path="/create-edit-shop"
+          element={userData ? <PageLoader><CreateEditShop /></PageLoader> : <Navigate to="/signin" />}
+        />
+        <Route
+          path="/add-item"
+          element={userData ? <PageLoader><AddItem /></PageLoader> : <Navigate to="/signin" />}
+        />
+        <Route
+          path="/edit-item/:itemId"
+          element={userData ? <PageLoader><EditItem /></PageLoader> : <Navigate to="/signin" />}
+        />
+        <Route
+          path="/cart"
+          element={userData ? <PageLoader><CartPage /></PageLoader> : <Navigate to="/signin" />}
+        />
+        <Route
+          path="/checkOut"
+          element={userData ? <PageLoader><CheckOut /></PageLoader> : <Navigate to="/signin" />}
+        />
+        <Route
+          path="/order-placed"
+          element={userData ? <PageLoader><OrderPlaced /></PageLoader> : <Navigate to="/signin" />}
+        />
+        <Route
+          path="/my-orders"
+          element={userData ? <PageLoader><MyOrders /></PageLoader> : <Navigate to="/signin" />}
+        />
+        <Route
+          path="/owner-orders"
+          element={userData ? <PageLoader><MyOrders /></PageLoader> : <Navigate to="/signin" />}
+        />
+        <Route
+          path="/delivery-orders"
+          element={userData ? <PageLoader><DeliveryBoy /></PageLoader> : <Navigate to="/signin" />}
+        />
+        <Route
+          path="/delivery-dashboard"
+          element={userData ? <PageLoader><DeliveryDashboard /></PageLoader> : <Navigate to="/signin" />}
+        />
+        <Route
+          path="/track-order/:orderId"
+          element={userData ? <PageLoader><TrackOrderPage /></PageLoader> : <Navigate to="/signin" />}
+        />
+        <Route
+          path="/shop/:shopId"
+          element={userData ? <PageLoader><Shop /></PageLoader> : <Navigate to="/signin" />}
+        />
+        <Route
+          path="/favorites"
+          element={userData ? <PageLoader><Favorites /></PageLoader> : <Navigate to="/signin" />}
+        />
+      </Routes>
+    </ErrorBoundary>
   );
 };
 

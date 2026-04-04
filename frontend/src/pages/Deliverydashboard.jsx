@@ -1,67 +1,52 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { serverUrl } from '../App';
-import { useNavigate } from 'react-router-dom';
 import Nav from '../components/Nav';
-import { TbBike, TbClock, TbCurrencyRupee, TbPackage, TbTrendingUp } from 'react-icons/tb';
-import { IoCalendarOutline, IoStatsChart } from 'react-icons/io5';
-import { FaRoute } from 'react-icons/fa';
+import {
+  Bike,
+  Clock,
+  IndianRupee,
+  Package,
+  TrendingUp,
+  Calendar,
+  BarChart3,
+  Power,
+  Zap
+} from 'lucide-react';
 import DeliveryBoyTraking from '../components/DeliveryBoyTraking';
+import { setUserData } from '../redux/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const DeliveryDashboard = () => {
-  const navigate = useNavigate();
+  const { userData } = useSelector(state => state.user);
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [todayStats, setTodayStats] = useState(null);
   const [allTimeStats, setAllTimeStats] = useState(null);
-  const [currentOrder, setCurrentOrder] = useState(null);
-  
-  // Fetch Today's Deliveries
+  const [isToggling, setIsToggling] = useState(false);
+
   const fetchTodayDeliveries = async () => {
     try {
-      const res = await axios.get(`${serverUrl}/api/order/get-today-deliveries`, {
-        withCredentials: true
-      });
+      const res = await axios.get(`${serverUrl}/api/order/get-today-deliveries`, { withCredentials: true });
       setTodayStats(res.data);
     } catch (error) {
       console.error('Error fetching today deliveries:', error);
     }
   };
 
-  // Fetch All-Time Earnings
   const fetchAllTimeEarnings = async () => {
     try {
-      const res = await axios.get(`${serverUrl}/api/order/get-all-time-earnings`, {
-        withCredentials: true
-      });
+      const res = await axios.get(`${serverUrl}/api/order/get-all-time-earnings`, { withCredentials: true });
       setAllTimeStats(res.data);
     } catch (error) {
       console.error('Error fetching all-time earnings:', error);
     }
   };
 
-  // Fetch Current Active Order
-  const fetchCurrentOrder = async () => {
-    try {
-      const res = await axios.get(`${serverUrl}/api/order/get-current-order`, {
-        withCredentials: true
-      });
-      setCurrentOrder(res.data);
-    } catch (error) {
-      // No active order is fine, don't show error
-      if (error.response?.status !== 404) {
-        console.error('Error fetching current order:', error);
-      }
-    }
-  };
-
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
-      await Promise.all([
-        fetchTodayDeliveries(),
-        fetchAllTimeEarnings(),
-        fetchCurrentOrder()
-      ]);
+      await Promise.all([fetchTodayDeliveries(), fetchAllTimeEarnings()]);
       setLoading(false);
     };
     loadData();
@@ -69,12 +54,15 @@ const DeliveryDashboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-rose-50">
+      <div className="min-h-screen bg-bg-primary">
         <Nav />
         <div className="flex items-center justify-center h-[calc(100vh-72px)]">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-2 border-[#ff4d2d] border-t-transparent mx-auto mb-4"></div>
-            <p className="text-gray-600 font-medium">Loading dashboard...</p>
+          <div className="text-center space-y-4">
+            <div className="relative w-16 h-16 mx-auto">
+              <div className="absolute inset-0 border-t-2 border-brand rounded-full animate-spin"></div>
+              <div className="absolute inset-2 border-r-2 border-brand-glow rounded-full animate-spin reverse"></div>
+            </div>
+            <p className="text-text-muted font-bold uppercase tracking-widest text-[10px]">Loading Dashboard...</p>
           </div>
         </div>
       </div>
@@ -82,184 +70,142 @@ const DeliveryDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-rose-50">
+    <div className="min-h-screen bg-bg-primary relative overflow-x-hidden pb-20">
       <Nav />
-      
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-20">
-        
+
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-20 relative z-10">
         {/* Page Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-1 h-10 bg-gradient-to-b from-[#ff4d2d] to-[#ff8e6d] rounded-full" />
-            <h1 className="text-3xl md:text-4xl font-black text-gray-900 tracking-tight">
-              Delivery <span className="text-[#ff4d2d]">Dashboard</span>
-            </h1>
+        <div className="mb-10 text-center md:text-left">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 premium-card rounded-full mb-4 mx-auto md:mx-0">
+            <Bike size={12} className="text-brand" />
+            <span className="text-caption text-text-secondary">
+              Partner Portal
+            </span>
           </div>
-          <p className="text-gray-500 font-medium text-sm ml-4">
-            Track your deliveries and earnings
-          </p>
-        </div>
-
-        {/* Today's Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          {/* Today's Earnings */}
-          <div className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-3xl p-6 shadow-lg shadow-green-200 text-white">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-                <TbCurrencyRupee size={24} />
-              </div>
-              <span className="text-xs font-bold bg-white/20 px-3 py-1 rounded-full uppercase tracking-wider">
-                Today
-              </span>
-            </div>
-            <p className="text-sm font-semibold mb-1 opacity-90">Today's Earnings</p>
-            <p className="text-4xl font-black">₹{todayStats?.totalEarnings || 0}</p>
-            <p className="text-xs mt-2 opacity-75">
-              {todayStats?.totalDeliveries || 0} deliveries × ₹{todayStats?.ratePerDelivery || 50}
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter">
+            Delivery <span className="text-gradient">Dashboard.</span>
+          </h1>
+          <div className="flex flex-col md:flex-row items-center md:items-end md:justify-between gap-8 mt-3">
+            <p className="text-text-secondary font-bold text-sm tracking-wide">
+              Track your deliveries, routes, and earnings in real-time.
             </p>
-          </div>
 
-          {/* Today's Deliveries */}
-          <div className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-3xl p-6 shadow-lg shadow-blue-200 text-white">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-                <TbPackage size={24} />
+            {/* Duty Toggle */}
+            <div className="flex items-center gap-4 bg-bg-secondary p-2 rounded-2xl border border-border">
+              <div className={`p-4 rounded-xl flex items-center gap-3 transition-all duration-500 ${userData?.isDutyOn ? 'bg-emerald-500/10 text-emerald-600' : 'bg-bg-tertiary text-text-muted'}`}>
+                {userData?.isDutyOn ? <Zap size={18} className="animate-pulse" /> : <Power size={18} />}
+                <span className="text-caption">{userData?.isDutyOn ? 'Receiving Orders' : 'Offline'}</span>
               </div>
-              <span className="text-xs font-bold bg-white/20 px-3 py-1 rounded-full uppercase tracking-wider">
-                Today
-              </span>
-            </div>
-            <p className="text-sm font-semibold mb-1 opacity-90">Deliveries</p>
-            <p className="text-4xl font-black">{todayStats?.totalDeliveries || 0}</p>
-            <p className="text-xs mt-2 opacity-75">
-              Completed today
-            </p>
-          </div>
-
-          {/* All-Time Earnings */}
-          <div className="bg-gradient-to-br from-purple-500 to-pink-600 rounded-3xl p-6 shadow-lg shadow-purple-200 text-white">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-                <TbTrendingUp size={24} />
-              </div>
-              <span className="text-xs font-bold bg-white/20 px-3 py-1 rounded-full uppercase tracking-wider">
-                All Time
-              </span>
-            </div>
-            <p className="text-sm font-semibold mb-1 opacity-90">Total Earnings</p>
-            <p className="text-4xl font-black">₹{allTimeStats?.totalEarnings || 0}</p>
-            <p className="text-xs mt-2 opacity-75">
-              {allTimeStats?.totalDeliveries || 0} total deliveries
-            </p>
-          </div>
-        </div>
-
-        {/* Current Active Order */}
-        {currentOrder && (
-          <div className="bg-white rounded-3xl border-2 border-orange-200 shadow-xl shadow-orange-100 overflow-hidden mb-8">
-            <div className="bg-gradient-to-r from-orange-500 to-rose-500 px-6 py-4 flex items-center gap-3">
-              <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
-                <FaRoute size={20} className="text-white" />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-white font-black text-lg">Active Delivery</h3>
-                <p className="text-white/80 text-xs font-semibold">Order #{currentOrder.id?.slice(-6)}</p>
-              </div>
-              <div className="flex items-center gap-1.5 bg-white/20 px-3 py-1.5 rounded-full">
-                <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
-                <span className="text-white text-xs font-black uppercase tracking-wider">Live</span>
-              </div>
-            </div>
-
-            <div className="p-6 space-y-6">
-              {/* Customer Info */}
-              <div className="bg-gray-50 rounded-2xl p-4">
-                <p className="text-xs font-black text-gray-400 uppercase tracking-wider mb-2">Customer</p>
-                <p className="font-bold text-gray-900">{currentOrder.user?.fullname || 'Customer'}</p>
-                <p className="text-sm text-gray-600 mt-1">{currentOrder.user?.mobile}</p>
-                <p className="text-sm text-gray-600 mt-2 leading-relaxed">
-                  📍 {currentOrder.deliveryAddress?.text}
-                </p>
-              </div>
-
-              {/* Items */}
-              <div className="bg-gray-50 rounded-2xl p-4">
-                <p className="text-xs font-black text-gray-400 uppercase tracking-wider mb-3">Items</p>
-                <div className="space-y-2">
-                  {currentOrder.shopOrder?.shopOrderItems?.map((item, idx) => (
-                    <div key={idx} className="flex justify-between text-sm">
-                      <span className="font-bold text-gray-700">
-                        {item.item?.name || item.name} <span className="text-gray-400">x{item.quantity}</span>
-                      </span>
-                      <span className="font-black text-gray-900">₹{item.price * item.quantity}</span>
-                    </div>
-                  ))}
-                </div>
-                <div className="border-t-2 border-gray-200 mt-3 pt-3 flex justify-between">
-                  <span className="text-xs font-black text-gray-500 uppercase">Total</span>
-                  <span className="font-black text-gray-900">₹{currentOrder.shopOrder?.subTotal}</span>
-                </div>
-              </div>
-
-              {/* Live Map */}
-              {currentOrder.deliveryBoyLocation && currentOrder.customerLocation && (
-                <div className="relative">
-                  <div className="absolute top-4 left-4 z-10 bg-white px-3 py-2 rounded-xl shadow-lg flex items-center gap-2 border border-gray-200">
-                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                    <span className="text-xs font-black text-green-700 uppercase tracking-wider">Live Route</span>
-                  </div>
-                  <div className="h-[300px] rounded-2xl overflow-hidden border-2 border-gray-200">
-                    <DeliveryBoyTraking
-                      data={{
-                        deliveryBoyLocation: currentOrder.deliveryBoyLocation,
-                        customerLocation: currentOrder.customerLocation
-                      }}
-                    />
-                  </div>
-                </div>
-              )}
-
-              {/* Action Button */}
               <button
-                onClick={() => navigate(`/track-order/${currentOrder.id}`)}
-                className="w-full h-12 bg-gradient-to-r from-[#ff4d2d] to-[#ff6b4a] text-white rounded-2xl font-bold text-sm shadow-lg shadow-orange-200 hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all duration-200"
+                disabled={isToggling}
+                onClick={async () => {
+                  setIsToggling(true);
+                  try {
+                    const res = await axios.post(`${serverUrl}/api/user/toggle-duty`, {}, { withCredentials: true });
+                    if (res.data.success) {
+                      dispatch(setUserData({ ...userData, isDutyOn: res.data.isDutyOn }));
+                    }
+                  } catch (e) {
+                    console.error(e);
+                  } finally {
+                    setIsToggling(false);
+                  }
+                }}
+                className={`h-14 px-8 rounded-xl font-bold text-[11px] uppercase tracking-widest transition-all duration-300 ${userData?.isDutyOn ? 'bg-bg-primary text-text-primary hover:bg-bg-tertiary border border-border' : 'primary-button'}`}
               >
-                View Full Details
+                {userData?.isDutyOn ? 'Go Offline' : 'Start Duty'}
               </button>
             </div>
           </div>
-        )}
+        </div>
 
-        {/* No Active Order Message */}
-        {!currentOrder && (
-          <div className="bg-white rounded-3xl border-2 border-gray-200 p-8 text-center mb-8">
-            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <TbBike size={32} className="text-gray-400" />
+        {/* Today's Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+          {/* Today's Earnings */}
+          <div className="premium-card p-8 relative overflow-hidden group">
+            <div className="absolute inset-0 bg-gradient-to-br from-brand/5 to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="flex items-center justify-between mb-6 relative z-10">
+              <div className="w-14 h-14 bg-brand/10 border border-brand/20 rounded-2xl flex items-center justify-center text-brand">
+                <IndianRupee size={24} />
+              </div>
+              <span className="text-caption text-brand bg-brand/10 border border-brand/20 px-4 py-1.5 rounded-full">
+                Today
+              </span>
             </div>
-            <h3 className="font-black text-gray-900 text-lg mb-2">No Active Deliveries</h3>
-            <p className="text-gray-500 text-sm">You're all caught up! New orders will appear here.</p>
+            <div className="relative z-10">
+              <p className="text-caption text-text-muted mb-2">Today's Earnings</p>
+              <p className="text-5xl font-black text-text-primary tracking-tighter">₹{todayStats?.totalEarnings || 0}</p>
+              <p className="text-xs font-bold text-brand mt-3 flex items-center gap-2">
+                <div className="w-1.5 h-1.5 rounded-full bg-brand animate-pulse" />
+                {todayStats?.totalDeliveries || 0} deliveries × ₹{todayStats?.ratePerDelivery || 40}
+              </p>
+            </div>
           </div>
-        )}
 
-        {/* Hourly Stats (Today) */}
-        {todayStats?.hourlyStats && todayStats.hourlyStats.length > 0 && (
-          <div className="bg-white rounded-3xl border-2 border-gray-200 shadow-md overflow-hidden mb-8">
-            <div className="px-6 py-4 border-b-2 border-gray-100 flex items-center gap-3">
-              <IoStatsChart size={24} className="text-[#ff4d2d]" />
-              <h3 className="font-black text-gray-900 text-lg">Today's Hourly Performance</h3>
+          {/* Today's Deliveries */}
+          <div className="premium-card p-8 relative overflow-hidden group">
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="flex items-center justify-between mb-6 relative z-10">
+              <div className="w-14 h-14 bg-blue-500/10 border border-blue-500/20 rounded-2xl flex items-center justify-center text-blue-500">
+                <Package size={24} />
+              </div>
+              <span className="text-caption text-blue-500 bg-blue-500/10 border border-blue-500/20 px-4 py-1.5 rounded-full">
+                Today
+              </span>
             </div>
-            <div className="p-6">
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            <div className="relative z-10">
+              <p className="text-caption text-text-muted mb-2">Deliveries Completed</p>
+              <p className="text-5xl font-black text-text-primary tracking-tighter">{todayStats?.totalDeliveries || 0}</p>
+              <p className="text-xs font-bold text-blue-500 mt-3 flex items-center gap-2">
+                <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                Successfully completed today
+              </p>
+            </div>
+          </div>
+
+          {/* All-Time Earnings */}
+          <div className="premium-card p-8 relative overflow-hidden group">
+            <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-500/5 to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="flex items-center justify-between mb-6 relative z-10">
+              <div className="w-14 h-14 bg-fuchsia-500/10 border border-fuchsia-500/20 rounded-2xl flex items-center justify-center text-fuchsia-500">
+                <TrendingUp size={24} />
+              </div>
+              <span className="text-caption text-fuchsia-500 bg-fuchsia-500/10 border border-fuchsia-500/20 px-4 py-1.5 rounded-full">
+                All Time
+              </span>
+            </div>
+            <div className="relative z-10">
+              <p className="text-caption text-text-muted mb-2">Total Earnings</p>
+              <p className="text-5xl font-black text-gradient tracking-tighter">₹{allTimeStats?.totalEarnings || 0}</p>
+              <p className="text-xs font-bold text-fuchsia-500 mt-3 flex items-center gap-2">
+                <div className="w-1.5 h-1.5 rounded-full bg-fuchsia-500" />
+                {allTimeStats?.totalDeliveries || 0} total deliveries processed
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Hourly Stats */}
+        {todayStats?.hourlyStats && todayStats.hourlyStats.length > 0 && (
+          <div className="premium-card overflow-hidden mb-12">
+            <div className="px-8 py-6 border-b border-border bg-bg-secondary flex items-center gap-4">
+              <div className="w-10 h-10 bg-brand/10 border border-brand/20 rounded-xl flex items-center justify-center">
+                <BarChart3 size={20} className="text-brand" />
+              </div>
+              <h3 className="font-black text-text-primary text-xl tracking-tight">Today's Heatmap</h3>
+            </div>
+            <div className="p-8">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
                 {todayStats.hourlyStats.map((stat) => (
-                  <div key={stat.hour} className="bg-gradient-to-br from-gray-50 to-orange-50 rounded-2xl p-4 border border-gray-200">
-                    <div className="flex items-center gap-2 mb-2">
-                      <TbClock size={16} className="text-[#ff4d2d]" />
-                      <span className="text-xs font-black text-gray-600">
+                  <div key={stat.hour} className="bg-bg-secondary border border-border rounded-2xl p-5 hover:bg-bg-tertiary hover:border-brand/30 transition-all duration-300 group">
+                    <div className="flex items-center gap-2 mb-4 bg-bg-primary w-max px-3 py-1.5 rounded-lg border border-border relative z-10">
+                      <Clock size={12} className="text-brand" />
+                      <span className="text-caption text-text-secondary">
                         {stat.hour}:00
                       </span>
                     </div>
-                    <p className="text-2xl font-black text-gray-900 mb-1">{stat.count}</p>
-                    <p className="text-xs text-gray-600 font-semibold">₹{stat.earning}</p>
+                    <p className="text-3xl font-black text-text-primary tracking-tighter mb-1 relative z-10 group-hover:text-brand transition-colors duration-300">{stat.count}</p>
+                    <p className="text-caption text-text-muted relative z-10 flex items-center gap-1.5"><IndianRupee size={10} />{stat.earning}</p>
                   </div>
                 ))}
               </div>
@@ -269,34 +215,36 @@ const DeliveryDashboard = () => {
 
         {/* Delivery History */}
         {allTimeStats?.dailyHistory && allTimeStats.dailyHistory.length > 0 && (
-          <div className="bg-white rounded-3xl border-2 border-gray-200 shadow-md overflow-hidden">
-            <div className="px-6 py-4 border-b-2 border-gray-100 flex items-center gap-3">
-              <IoCalendarOutline size={24} className="text-[#ff4d2d]" />
-              <h3 className="font-black text-gray-900 text-lg">Delivery History</h3>
+          <div className="premium-card overflow-hidden">
+            <div className="px-8 py-6 border-b border-border bg-bg-secondary flex items-center gap-4">
+              <div className="w-10 h-10 bg-brand/10 border border-brand/20 rounded-xl flex items-center justify-center">
+                <Calendar size={20} className="text-brand" />
+              </div>
+              <h3 className="font-black text-text-primary text-xl tracking-tight">Financial Ledger</h3>
             </div>
-            <div className="p-6">
-              <div className="space-y-3">
+            <div className="p-8">
+              <div className="space-y-4">
                 {allTimeStats.dailyHistory.slice(0, 10).map((day) => (
-                  <div key={day.date} className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl border border-gray-200 hover:bg-orange-50 hover:border-orange-200 transition-all">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center border border-gray-200">
-                        <TbPackage size={20} className="text-[#ff4d2d]" />
+                  <div key={day.date} className="flex items-center justify-between p-5 bg-bg-secondary rounded-2xl border border-border hover:bg-brand/5 hover:border-brand/20 transition-all duration-300 group">
+                    <div className="flex items-center gap-5">
+                      <div className="w-12 h-12 bg-bg-primary rounded-xl flex items-center justify-center border border-border group-hover:border-brand/30 transition-colors duration-300">
+                        <Package size={20} className="text-text-muted group-hover:text-brand transition-colors duration-300" />
                       </div>
                       <div>
-                        <p className="font-bold text-gray-900 text-sm">
-                          {new Date(day.date).toLocaleDateString('en-IN', { 
-                            day: 'numeric', 
-                            month: 'short', 
-                            year: 'numeric' 
+                        <p className="font-black text-text-primary text-[15px] tracking-wide">
+                          {new Date(day.date).toLocaleDateString('en-IN', {
+                            day: 'numeric',
+                            month: 'short',
+                            year: 'numeric'
                           })}
                         </p>
-                        <p className="text-xs text-gray-500 font-semibold">
-                          {day.count} deliveries
+                        <p className="text-caption text-text-muted mt-1">
+                          {day.count} Deployments
                         </p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="font-black text-gray-900 text-lg">₹{day.earnings}</p>
+                      <p className="font-black text-gradient text-2xl tracking-tighter">₹{day.earnings}</p>
                     </div>
                   </div>
                 ))}

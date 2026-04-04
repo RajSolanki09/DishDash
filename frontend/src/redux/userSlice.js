@@ -12,8 +12,10 @@ const userSlice = createSlice({
     cartItems: [],
     totalAmount: 0,
     myOrders: [],
+    notifications: [],
     searchResults:[],
-    socket:null
+    socket:null,
+    favoriteItems:[]  // ✅ Populated favorites with full item + shop data
   },
   reducers: {
     setUserData: (state, action) => {
@@ -169,6 +171,18 @@ const userSlice = createSlice({
     ,
     setSearchResults:(state,action)=>{
       state.searchResults=action.payload
+    },
+    addNotification: (state, action) => {
+      state.notifications = [{ ...action.payload, id: Date.now(), read: false }, ...state.notifications].slice(0, 20);
+    },
+    markNotificationsRead: (state) => {
+      state.notifications = state.notifications.map(n => ({ ...n, read: true }));
+    },
+    clearNotifications: (state) => {
+      state.notifications = [];
+    },
+    setFavoriteItems: (state, action) => {
+      state.favoriteItems = Array.isArray(action.payload) ? action.payload : [];
     }
   },
 });
@@ -190,7 +204,11 @@ export const {
   updateOrderStatus,
   setSearchResults
       ,setSocket,
-      updateRealtimeOrderStatus
+      updateRealtimeOrderStatus,
+      addNotification,
+      markNotificationsRead,
+      clearNotifications,
+      setFavoriteItems
 } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -1,18 +1,15 @@
 import React, { useState, useRef, useMemo, useEffect } from "react";
 import {
-  FaSearch,
-  
-  FaTimes,
-  FaMapMarkerAlt,
-  FaRegCreditCard,
-  FaMoneyBillWave,
-} from "react-icons/fa";
-import {
-  IoChevronBackCircleOutline,
-  IoLocationOutline,
-  IoChevronForward,
-} from "react-icons/io5";
-import { FaLocationDot, FaLocationCrosshairs } from "react-icons/fa6";
+  MapPin,
+  Search,
+  Crosshair,
+  CreditCard,
+  Banknote,
+  ArrowLeft,
+  ChevronRight,
+  Lock,
+  Navigation
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import {
   MapContainer,
@@ -30,9 +27,9 @@ import { addMyOrder, clearCart } from "../redux/userSlice";
 import { setLocation, setAdress } from "../redux/mapSlice";
 import { ClipLoader } from "react-spinners";
 import Nav from "../components/Nav";
-import { TbArrowLeft } from "react-icons/tb";
+import gsap from "gsap";
 
-// Leaflet Icon Setup (unchanged)
+// Leaflet Icon Setup
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl:
@@ -105,12 +102,46 @@ const CheckOut = () => {
   const [houseNo, setHouseNo] = useState("");
   const [landmark, setLandmark] = useState("");
 
-  const deliveryFee = 50;
+  const containerRef = useRef(null);
+
+  const deliveryFee = 40;
   const grandTotal = totalAmount + deliveryFee;
   const mapCenter = [
     location?.lat || 23.0225,
     location?.lon || 72.5714,
   ];
+
+  // GSAP Entry Animations
+  useEffect(() => {
+    let ctx = gsap.context(() => {
+      const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
+
+      tl.fromTo(
+        ".header-anim",
+        { opacity: 0, y: -20 },
+        { opacity: 1, y: 0, duration: 0.8, stagger: 0.1 }
+      )
+        .fromTo(
+          ".address-card-anim",
+          { opacity: 0, x: -30 },
+          { opacity: 1, x: 0, duration: 0.7 },
+          "-=0.6"
+        )
+        .fromTo(
+          ".payment-card-anim",
+          { opacity: 0, x: -30 },
+          { opacity: 1, x: 0, duration: 0.7 },
+          "-=0.5"
+        )
+        .fromTo(
+          ".summary-card-anim",
+          { opacity: 0, scale: 0.95, y: 30 },
+          { opacity: 1, scale: 1, y: 0, duration: 0.8, ease: "back.out(1.2)" },
+          "-=0.6"
+        );
+    }, containerRef);
+    return () => ctx.revert();
+  }, []);
 
   const handlePositionChange = async (newPos) => {
     dispatch(setLocation({ lat: newPos.lat, lon: newPos.lng }));
@@ -153,6 +184,7 @@ const CheckOut = () => {
         setSearchAddress("");
       }
     } catch (error) {
+      console.error(error);
       alert("Search failed");
     } finally {
       setSearching(false);
@@ -180,9 +212,8 @@ const CheckOut = () => {
     if (!houseNo) return alert("Please enter Flat/House number for delivery");
 
     setPlacing(true);
-    const finalFullAddress = `${houseNo}${
-      landmark ? `, Near ${landmark}` : ""
-    }, ${address}`;
+    const finalFullAddress = `${houseNo}${landmark ? `, Near ${landmark}` : ""
+      }, ${address}`;
 
     try {
       const result = await axios.post(
@@ -210,6 +241,7 @@ const CheckOut = () => {
         openRazorpayWindow(orderId, razorOrder);
       }
     } catch (error) {
+      console.error(error);
       alert("Order failed");
     } finally {
       setPlacing(false);
@@ -217,7 +249,6 @@ const CheckOut = () => {
   };
 
   const openRazorpayWindow = (orderId, razorOrder) => {
-    console.log('Razorpay Key:', import.meta.env.VITE_RAZORPAY_ID);
     const options = {
       key: import.meta.env.VITE_RAZORPAY_ID,
       amount: razorOrder.amount,
@@ -258,61 +289,57 @@ const CheckOut = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-rose-50">
+    <div className="min-h-screen relative bg-bg-secondary text-text-primary overflow-hidden pb-20" ref={containerRef}>
       <Nav />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-20">
-        {/* Header with consistent back button (styled like global back button but with cart navigation) */}
-        <header className="mb-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+        {/* Header */}
+        <header className="mb-10 header-anim">
           <button
-          onClick={() => navigate(-1)}
-          className="group flex items-center gap-2 h-10 px-4 bg-white border border-gray-200 rounded-2xl text-gray-600 font-bold text-[11px] uppercase tracking-wide shadow-sm hover:bg-orange-50 hover:border-[#ff4d2d]/30 hover:text-[#ff4d2d] hover:shadow-md active:scale-95 transition-all duration-200 cursor-pointer mb-7"
-        >
-          <TbArrowLeft
-            size={16}
-            className="group-hover:-translate-x-0.5 transition-transform duration-200"
-          />
-          Back
-        </button>
+            onClick={() => navigate(-1)}
+            className="group flex items-center gap-2 h-10 px-5 bg-bg-card border border-border rounded-xl text-text-secondary font-bold text-[10px] uppercase tracking-widest hover:border-brand hover:text-brand shadow-sm active:scale-95 transition-all duration-300 mb-8"
+          >
+            <ArrowLeft size={14} />
+            Go Back
+          </button>
 
           <div className="mt-4">
-            <h1 className="text-4xl md:text-5xl font-black text-gray-900 tracking-tighter">
-              Confirm <span className="text-[#ff4d2d]">Order.</span>
+            <h1 className="text-4xl md:text-5xl font-black text-text-primary tracking-tighter">
+              Confirm <span className="text-brand">Order.</span>
             </h1>
-            <p className="text-gray-400 font-medium text-sm mt-2 tracking-wide">
-              Almost there – just confirm your address and payment
+            <p className="text-text-secondary font-medium text-sm mt-3 tracking-wide">
+              Securely finalize your address and payment details
             </p>
           </div>
         </header>
 
         <div className="grid lg:grid-cols-12 gap-8 lg:gap-10 items-start">
           {/* LEFT COLUMN – Address & Payment */}
-          <div className="lg:col-span-8 space-y-6">
-            {/* 🗺️ Delivery Address Card – Premium Glass */}
-            <div className="bg-white/90 backdrop-blur-sm rounded-3xl border border-gray-200/70 shadow-md shadow-gray-100/40 overflow-hidden">
-              <div className="p-6 sm:p-8 border-b border-gray-100 flex flex-wrap items-center justify-between gap-4">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-[#fff6f0] to-white rounded-2xl flex items-center justify-center text-[#ff4d2d] shadow-sm">
-                    <FaLocationDot size={20} />
+          <div className="lg:col-span-8 space-y-8">
+            {/* 🗺️ Delivery Address Card */}
+            <div className="address-card-anim bg-bg-card border border-border rounded-[2.5rem] shadow-sm overflow-hidden relative">
+              <div className="p-6 sm:p-8 border-b border-border flex flex-wrap items-center justify-between gap-4 bg-bg-secondary/30">
+                <div className="flex items-center gap-5">
+                  <div className="w-12 h-12 bg-brand/5 border border-brand/10 rounded-xl flex items-center justify-center text-brand">
+                    <MapPin size={22} />
                   </div>
                   <div>
-                    <h2 className="text-xl font-black text-gray-900 leading-tight">
+                    <h2 className="text-xl font-black text-text-primary leading-tight">
                       Delivery Address
                     </h2>
-                    <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">
-                      Where should we drop it?
+                    <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest mt-1">
+                      Pinpoint your location
                     </p>
                   </div>
                 </div>
                 <button
                   onClick={handleGetCurrentLocation}
-                  className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#ff4d2d] to-[#ff6b4a] text-white rounded-2xl text-[11px] font-black uppercase tracking-wider shadow-md shadow-orange-200 hover:shadow-lg hover:-translate-y-0.5 active:scale-95 transition-all duration-200 cursor-pointer"
+                  className="flex items-center gap-2 px-6 py-3 bg-bg-secondary border border-border rounded-xl text-[10px] font-black text-text-primary uppercase tracking-widest shadow-sm hover:bg-brand hover:border-brand hover:text-white active:scale-95 transition-all duration-300 cursor-pointer"
                 >
                   {gettingLocation ? (
-                    <ClipLoader size={14} color="white" />
+                    <ClipLoader size={14} color="#ff4d2d" />
                   ) : (
                     <>
-                      <FaLocationCrosshairs size={14} />
+                      <Crosshair size={14} />
                       <span>Use My GPS</span>
                     </>
                   )}
@@ -324,13 +351,13 @@ const CheckOut = () => {
                 <div className="relative group">
                   <input
                     type="text"
-                    className="w-full bg-gray-50 border border-gray-200/80 focus:border-[#ff4d2d]/40 focus:ring-2 focus:ring-[#ff4d2d]/10 px-14 py-4 rounded-2xl text-sm font-bold transition-all outline-none placeholder:text-gray-400"
-                    placeholder="Search for your building, street or area..."
+                    className="w-full bg-bg-secondary border border-border focus:border-brand focus:bg-bg-card pl-14 pr-12 py-4 rounded-2xl text-sm font-bold transition-all outline-none placeholder:text-text-muted text-text-primary shadow-inner focus:shadow-md"
+                    placeholder="Search building, street, or area..."
                     value={searchAddress}
                     onChange={(e) => setSearchAddress(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && handleSearchAddress()}
                   />
-                  <FaSearch className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#ff4d2d] transition-colors" size={16} />
+                  <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-text-muted group-focus-within:text-brand transition-colors" size={18} />
                   {searching && (
                     <div className="absolute right-5 top-1/2 -translate-y-1/2">
                       <ClipLoader size={16} color="#ff4d2d" />
@@ -339,11 +366,11 @@ const CheckOut = () => {
                 </div>
 
                 {/* Map */}
-                <div className="h-[350px] md:h-[400px] rounded-2xl overflow-hidden border-2 border-white/50 shadow-lg">
+                <div className="h-[350px] md:h-[400px] rounded-2xl overflow-hidden border border-border shadow-md relative group">
                   <MapContainer
                     center={mapCenter}
                     zoom={15}
-                    className="h-full w-full"
+                    className="h-full w-full z-0"
                   >
                     <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                     <MapViewCenter center={mapCenter} />
@@ -359,41 +386,41 @@ const CheckOut = () => {
 
                 {/* Address Details Form */}
                 {address && (
-                  <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                    <div className="grid md:grid-cols-2 gap-4">
+                  <div className="space-y-5 mt-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                    <div className="grid md:grid-cols-2 gap-5">
                       <div>
-                        <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2 ml-1">
+                        <label className="block text-[10px] font-black text-text-muted uppercase tracking-widest mb-2 ml-1">
                           Flat / House No / Floor *
                         </label>
                         <input
                           type="text"
                           placeholder="e.g. Flat 402, 4th Floor"
-                          className="w-full bg-gray-50 border border-gray-200/80 focus:border-[#ff4d2d]/40 focus:ring-2 focus:ring-[#ff4d2d]/10 px-5 py-3.5 rounded-xl text-sm font-bold outline-none transition-all"
+                          className="w-full bg-bg-secondary border border-border focus:border-brand focus:bg-bg-card px-5 py-4 rounded-xl text-sm font-bold text-text-primary outline-none transition-all placeholder:text-text-muted shadow-inner focus:shadow-md"
                           value={houseNo}
                           onChange={(e) => setHouseNo(e.target.value)}
                         />
                       </div>
                       <div>
-                        <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2 ml-1">
+                        <label className="block text-[10px] font-black text-text-muted uppercase tracking-widest mb-2 ml-1">
                           Landmark (Optional)
                         </label>
                         <input
                           type="text"
                           placeholder="e.g. Near Apollo Hospital"
-                          className="w-full bg-gray-50 border border-gray-200/80 focus:border-[#ff4d2d]/40 focus:ring-2 focus:ring-[#ff4d2d]/10 px-5 py-3.5 rounded-xl text-sm font-bold outline-none transition-all"
+                          className="w-full bg-bg-secondary border border-border focus:border-brand focus:bg-bg-card px-5 py-4 rounded-xl text-sm font-bold text-text-primary outline-none transition-all placeholder:text-text-muted shadow-inner focus:shadow-md"
                           value={landmark}
                           onChange={(e) => setLandmark(e.target.value)}
                         />
                       </div>
                     </div>
 
-                    <div className="bg-gradient-to-br from-gray-900 to-gray-800 text-white p-5 rounded-2xl flex items-start gap-4 shadow-md">
-                      <IoLocationOutline className="mt-1 text-[#ff4d2d]" size={20} />
+                    <div className="bg-bg-secondary border border-border p-5 rounded-2xl flex items-start gap-4 shadow-inner mt-4">
+                      <Navigation className="mt-1 text-brand" size={20} />
                       <div>
-                        <p className="text-[10px] font-black text-white/50 uppercase tracking-widest">
-                          Detected Area
+                        <p className="text-[10px] font-black text-text-muted uppercase tracking-widest mb-1">
+                          Detected Location
                         </p>
-                        <p className="text-sm font-bold">{address}</p>
+                        <p className="text-sm font-bold text-text-primary leading-relaxed">{address}</p>
                       </div>
                     </div>
                   </div>
@@ -402,40 +429,37 @@ const CheckOut = () => {
             </div>
 
             {/* 💳 Payment Method Card */}
-            <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-6 sm:p-8 border border-gray-200/70 shadow-md shadow-gray-100/40">
-              <h2 className="text-xl font-black text-gray-900 mb-6 tracking-tight flex items-center gap-2">
-                <span className="w-1.5 h-6 bg-[#ff4d2d] rounded-full"></span>
-                Payment Method
+            <div className="payment-card-anim bg-bg-card rounded-[2.5rem] border border-border shadow-sm p-6 sm:p-8">
+              <h2 className="text-xl font-black text-text-primary mb-8 tracking-tight flex items-center gap-3">
+                <div className="w-10 h-10 bg-brand/5 border border-brand/10 rounded-xl flex items-center justify-center">
+                  <CreditCard className="text-brand" size={18} />
+                </div>
+                Payment Choice
               </h2>
-              <div className="grid sm:grid-cols-2 gap-4">
+              <div className="grid sm:grid-cols-2 gap-5">
                 <button
                   onClick={() => setPaymentMethod("cod")}
-                  className={`flex items-center gap-4 p-5 rounded-2xl border-2 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] cursor-pointer ${
-                    paymentMethod === "cod"
-                      ? "border-[#ff4d2d] bg-gradient-to-br from-[#fff6f0] to-white shadow-md"
-                      : "border-gray-200/80 bg-gray-50/50 hover:bg-white"
-                  }`}
+                  className={`flex flex-col items-start gap-4 p-6 rounded-2xl border transition-all duration-300 active:scale-[0.98] cursor-pointer relative overflow-hidden ${paymentMethod === "cod"
+                      ? "border-brand bg-brand/5 shadow-md"
+                      : "border-border bg-bg-card hover:border-brand/30 hover:bg-bg-secondary"
+                    }`}
                 >
                   <div
-                    className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${
-                      paymentMethod === "cod"
-                        ? "bg-[#ff4d2d] text-white shadow-md"
-                        : "bg-gray-200 text-gray-500"
-                    }`}
-                  >
-                    <FaMoneyBillWave size={18} />
-                  </div>
-                  <div className="text-left">
-                    <p
-                      className={`text-sm font-black uppercase ${
-                        paymentMethod === "cod"
-                          ? "text-gray-900"
-                          : "text-gray-500"
+                    className={`w-12 h-12 rounded-[1rem] flex items-center justify-center transition-all border ${paymentMethod === "cod"
+                        ? "bg-brand text-white border-brand"
+                        : "bg-bg-secondary border-border text-text-muted"
                       }`}
+                  >
+                    <Banknote size={24} />
+                  </div>
+                  <div className="text-left mt-2">
+                    <p
+                      className={`text-[13px] font-black uppercase tracking-wider mb-1 ${paymentMethod === "cod" ? "text-text-primary" : "text-text-secondary"
+                        }`}
                     >
                       Cash on Delivery
                     </p>
-                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-tight">
+                    <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest">
                       Pay at your door
                     </p>
                   </div>
@@ -443,33 +467,28 @@ const CheckOut = () => {
 
                 <button
                   onClick={() => setPaymentMethod("online")}
-                  className={`flex items-center gap-4 p-5 rounded-2xl border-2 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] cursor-pointer ${
-                    paymentMethod === "online"
-                      ? "border-[#ff4d2d] bg-gradient-to-br from-[#fff6f0] to-white shadow-md"
-                      : "border-gray-200/80 bg-gray-50/50 hover:bg-white"
-                  }`}
+                  className={`flex flex-col items-start gap-4 p-6 rounded-2xl border transition-all duration-300 active:scale-[0.98] cursor-pointer relative overflow-hidden ${paymentMethod === "online"
+                      ? "border-brand bg-brand/5 shadow-md"
+                      : "border-border bg-bg-card hover:border-brand/30 hover:bg-bg-secondary"
+                    }`}
                 >
                   <div
-                    className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${
-                      paymentMethod === "online"
-                        ? "bg-[#ff4d2d] text-white shadow-md"
-                        : "bg-gray-200 text-gray-500"
-                    }`}
-                  >
-                    <FaRegCreditCard size={18} />
-                  </div>
-                  <div className="text-left">
-                    <p
-                      className={`text-sm font-black uppercase ${
-                        paymentMethod === "online"
-                          ? "text-gray-900"
-                          : "text-gray-500"
+                    className={`w-12 h-12 rounded-[1rem] flex items-center justify-center transition-all border ${paymentMethod === "online"
+                        ? "bg-brand text-white border-brand"
+                        : "bg-bg-secondary border-border text-text-muted"
                       }`}
+                  >
+                    <CreditCard size={24} />
+                  </div>
+                  <div className="text-left mt-2">
+                    <p
+                      className={`text-[13px] font-black uppercase tracking-wider mb-1 ${paymentMethod === "online" ? "text-text-primary" : "text-text-secondary"
+                        }`}
                     >
                       Online Payment
                     </p>
-                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-tight">
-                      UPI, Cards or Netbanking
+                    <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest">
+                      UPI, Cards & Netbanking
                     </p>
                   </div>
                 </button>
@@ -478,26 +497,26 @@ const CheckOut = () => {
           </div>
 
           {/* RIGHT COLUMN – Order Summary (Sticky) */}
-          <div className="lg:col-span-4 sticky top-28">
-            <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-6 sm:p-8 shadow-[0_20px_40px_-12px_rgba(0,0,0,0.05)] border border-gray-200/70">
-              <h2 className="text-2xl font-black text-gray-900 mb-6 tracking-tighter flex items-center gap-2">
-                <span className="w-1.5 h-6 bg-[#ff4d2d] rounded-full"></span>
-                Order Summary
+          <div className="lg:col-span-4 sticky top-28 summary-card-anim">
+            <div className="bg-bg-card border border-border rounded-[2.5rem] p-6 sm:p-8 shadow-lg">
+              <h2 className="text-[16px] font-black text-text-primary uppercase tracking-widest mb-8 flex items-center gap-3">
+                <div className="w-1.5 h-6 bg-brand rounded-full" />
+                Final Summary
               </h2>
 
               {/* Cart Items List */}
-              <div className="space-y-4 max-h-[280px] overflow-y-auto pr-1 custom-scrollbar mb-6">
+              <div className="space-y-4 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar mb-8">
                 {cartItems?.map((item, i) => (
-                  <div key={i} className="flex justify-between items-center group">
+                  <div key={i} className="flex justify-between items-center group bg-bg-secondary/50 border border-border p-3 rounded-2xl">
                     <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 bg-gray-100 rounded-xl flex items-center justify-center text-xs font-black text-gray-700 group-hover:bg-[#ff4d2d] group-hover:text-white transition-colors">
+                        <div className="w-8 h-8 bg-bg-card border border-border rounded-lg flex items-center justify-center text-[11px] font-black text-brand shadow-sm">
                         {item.quantity}x
                       </div>
-                      <p className="text-sm font-bold text-gray-700 uppercase tracking-tight max-w-[150px] truncate">
+                      <p className="text-[12px] font-bold text-text-primary uppercase tracking-widest max-w-[130px] truncate">
                         {item.name}
                       </p>
                     </div>
-                    <span className="text-sm font-black text-gray-900">
+                    <span className="text-[13px] font-black text-text-primary">
                       ₹{item.price * item.quantity}
                     </span>
                   </div>
@@ -505,28 +524,28 @@ const CheckOut = () => {
               </div>
 
               {/* Price Breakdown */}
-              <div className="space-y-3 pt-5 border-t border-gray-100">
-                <div className="flex justify-between text-xs font-bold text-gray-500 uppercase tracking-wider">
+              <div className="space-y-4 pt-6 border-t border-border">
+                <div className="flex justify-between items-center text-[10px] font-black text-text-muted uppercase tracking-widest">
                   <span>Subtotal</span>
-                  <span className="text-gray-900 font-black">
+                  <span className="text-text-primary text-[13px]">
                     ₹{totalAmount}
                   </span>
                 </div>
-                <div className="flex justify-between text-xs font-bold text-gray-500 uppercase tracking-wider">
-                  <span>Delivery Fee</span>
-                  <span className="text-green-600 font-black bg-green-50 px-2 py-0.5 rounded-full text-[11px]">
+                <div className="flex justify-between items-center text-[10px] font-black text-text-muted uppercase tracking-widest">
+                  <span>White-Glove Delivery</span>
+                  <span className="text-brand text-[11px] bg-brand/5 border border-brand/10 px-3 py-1 rounded-lg">
                     ₹{deliveryFee}
                   </span>
                 </div>
               </div>
 
               {/* Grand Total */}
-              <div className="mt-6 bg-gradient-to-br from-gray-50 to-white p-5 rounded-2xl border border-gray-100/80">
+              <div className="mt-8 bg-bg-secondary p-6 rounded-[1.5rem] border border-border shadow-inner">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm font-black text-gray-900 uppercase">
-                    Grand Total
+                  <span className="text-[12px] font-black text-text-primary uppercase tracking-widest">
+                    Total
                   </span>
-                  <span className="text-3xl md:text-4xl font-black text-[#ff4d2d]">
+                  <span className="text-4xl font-black text-brand leading-none">
                     ₹{grandTotal}
                   </span>
                 </div>
@@ -536,19 +555,20 @@ const CheckOut = () => {
               <button
                 disabled={placing || !location?.lat}
                 onClick={handlePlaceOrder}
-                className="w-full mt-6 bg-gradient-to-r from-[#ff4d2d] to-[#ff6b4a] text-white py-5 rounded-2xl font-black text-lg shadow-md shadow-orange-200 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-3 cursor-pointer"
+                className="w-full mt-8 primary-button py-5 rounded-2xl font-black text-[13px] uppercase tracking-[0.15em] shadow-lg transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-3 group"
               >
                 {placing ? (
                   <ClipLoader size={22} color="white" />
                 ) : (
                   <>
-                    PLACE ORDER <IoChevronForward className="group-hover:translate-x-1 transition-transform" />
+                    CONFIRM & PAY <ChevronRight className="group-hover:translate-x-1 transition-transform" />
                   </>
                 )}
               </button>
 
-              <p className="text-[10px] text-center mt-5 text-gray-400 font-bold uppercase tracking-widest">
-                🔒 Secure SSL Encrypted Checkout
+              <p className="text-[9px] text-center mt-6 text-text-muted font-bold uppercase tracking-widest flex items-center justify-center gap-1.5">
+                <Lock size={10} className="text-brand opacity-70" />
+                Secure SSL Encrypted Checkout
               </p>
             </div>
           </div>

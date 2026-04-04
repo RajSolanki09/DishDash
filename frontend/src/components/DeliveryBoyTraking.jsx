@@ -32,7 +32,7 @@ const DeliveryBoyTraking = ({ data }) => {
     !customerLocation?.lon
   ) {
     return (
-      <p className="text-center text-gray-500 mt-4">
+      <p className="text-center text-text-muted mt-4">
         Location not available
       </p>
     );
@@ -44,7 +44,7 @@ const DeliveryBoyTraking = ({ data }) => {
   ];
 
   return (
-    <div className="w-full aspect-video min-h-[200px] rounded-xl overflow-hidden border-2 border-gray-200">
+    <div className="w-full aspect-video min-h-[200px] rounded-xl overflow-hidden border-2 border-border">
       <MapContainer
         center={[deliveryBoyLocation.lat, deliveryBoyLocation.lon]}
         zoom={14}

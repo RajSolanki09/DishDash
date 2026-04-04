@@ -242,3 +242,25 @@ export const rating = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 }
+
+export const toggleItemAvailability = async (req, res) => {
+  try {
+    const { itemId } = req.params;
+    const item = await Item.findById(itemId);
+    if (!item) return res.status(404).json({ message: "Item not found" });
+
+    item.isAvailable = !item.isAvailable;
+    await item.save();
+
+    const shop = await Shop.findOne({ owner: req.userId });
+    await shop.populate("owner");
+    await shop.populate({
+      path: "items",
+      options: { sort: { updatedAt: -1 } },
+    });
+
+    res.status(200).json({ success: true, isAvailable: item.isAvailable, shop });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to toggle item availability" });
+  }
+};

@@ -37,6 +37,16 @@ const userSchema = new mongoose.Schema(
         required: false,
       },
     },
+    favorites: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Item",
+      },
+    ],
+    isDutyOn: {
+      type: Boolean,
+      default: true,
+    },
   },
   { timestamps: true }
 );

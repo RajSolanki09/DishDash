@@ -11,7 +11,7 @@ import { sendDeliveryOtpMail } from "../utils/mail.js";
 dotenv.config();
 
 // ✅ Fixed rate per delivery
-const DELIVERY_EARNING_PER_ORDER = 50;
+const DELIVERY_EARNING_PER_ORDER = 40;
 
 let instance = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
@@ -246,6 +246,13 @@ export const updateOrderStatus = async (req, res) => {
     let availableBoys = [];
 
     if (status === "out of delivery") {
+      // Debug: Log all delivery boys and their online status
+      const allDeliveryBoys = await User.find({ role: "deliveryBoy" });
+      console.log(`🔍 DEBUG: Total delivery boys in DB: ${allDeliveryBoys.length}`);
+      allDeliveryBoys.forEach(b => {
+        console.log(`  - ${b.fullname}: isOnline=${b.isOnline}, hasLocation=${!!b.location?.coordinates?.length}, coords=${JSON.stringify(b.location?.coordinates)}`);
+      });
+
       const deliveryBoys = await User.find({
         role: "deliveryBoy",
         isOnline: true,
@@ -257,7 +264,8 @@ export const updateOrderStatus = async (req, res) => {
         },
       });
 
-      console.log(`🔍 Found ${deliveryBoys.length} nearby delivery boys`);
+      console.log(`🔍 Found ${deliveryBoys.length} nearby delivery boys within 10km`);
+      console.log(`📍 Shop location: ${JSON.stringify(shop.location.coordinates)}`);
 
       availableBoys = deliveryBoys.map((b) => ({
         id: b._id,
@@ -267,6 +275,10 @@ export const updateOrderStatus = async (req, res) => {
         socketId: b.socketId,
         assigned: false,
       }));
+
+      if (deliveryBoys.length === 0) {
+        console.log(`⚠️ No online delivery boys found within 10km of shop. Order will NOT be broadcasted.`);
+      }
 
       if (!shopOrder.assignment && deliveryBoys.length > 0) {
         const assignment = await DeliveryAssignment.create({
@@ -743,7 +755,7 @@ export const getAllTimeEarnings = async (req, res) => {
             ...shopOrder,
             orderId: order._id,
             deliveredAt: shopOrder.deliveredAt,
-            earning: shopOrder.deliveryEarning || 50 // fallback to 50 if not set
+            earning: shopOrder.deliveryEarning || 40 // fallback to 40 if not set
           });
         }
       });
@@ -751,7 +763,7 @@ export const getAllTimeEarnings = async (req, res) => {
 
     // Calculate totals
     const totalDeliveries = allDeliveries.length;
-    const totalEarnings = allDeliveries.reduce((sum, d) => sum + (d.earning || 50), 0);
+    const totalEarnings = allDeliveries.reduce((sum, d) => sum + (d.earning || 40), 0);
 
     // Group by date for history
     const earningsByDate = {};
@@ -762,7 +774,7 @@ export const getAllTimeEarnings = async (req, res) => {
           earningsByDate[date] = { count: 0, earnings: 0 };
         }
         earningsByDate[date].count += 1;
-        earningsByDate[date].earnings += (delivery.earning || 50);
+        earningsByDate[date].earnings += (delivery.earning || 40);
       }
     });
 
@@ -778,7 +790,7 @@ export const getAllTimeEarnings = async (req, res) => {
     return res.json({
       totalEarnings,
       totalDeliveries,
-      ratePerDelivery: 50,
+      ratePerDelivery: 40,
       dailyHistory,
       allDeliveries: allDeliveries.slice(0, 50) // return last 50 deliveries
     });
@@ -787,4 +799,35 @@ export const getAllTimeEarnings = async (req, res) => {
     console.error("❌ Get all-time earnings error:", error);
     return res.status(500).json({ message: "Failed to get earnings" });
   }
+};
+
+export const reorder = async (req, res) => {
+    try {
+        const { orderId } = req.params;
+        const order = await Order.findById(orderId).populate('shopOrders.shopOrderItems.item');
+        
+        if (!order) return res.status(404).json({ success: false, message: "Order not found" });
+
+        // Extract all items from all shopOrders
+        const items = [];
+        order.shopOrders.forEach(so => {
+            so.shopOrderItems.forEach(oi => {
+              if (oi.item) {
+                items.push({
+                    id: oi.item._id,
+                    name: oi.item.name,
+                    price: oi.item.price,
+                    image: oi.item.image,
+                    shop: so.shop,
+                    quantity: oi.quantity
+                });
+              }
+            });
+        });
+
+        return res.status(200).json({ success: true, items });
+    } catch (error) {
+        console.error("Reorder Error:", error);
+        return res.status(500).json({ success: false, message: "Reorder failed" });
+    }
 };

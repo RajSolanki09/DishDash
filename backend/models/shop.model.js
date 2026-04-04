@@ -44,6 +44,10 @@ const shopSchema = new mongoose.Schema(
   required: true, // 🔥 OWNER MUST SET SHOP LOCATION
 }
     },
+    isOpen: {
+      type: Boolean,
+      default: true,
+    },
   },
   { timestamps: true },
 );

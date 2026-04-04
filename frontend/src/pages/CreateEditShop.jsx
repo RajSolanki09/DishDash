@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import {
-  IoStorefrontOutline,
-  IoCloudUploadOutline,
-  IoLocationOutline,
-} from "react-icons/io5";
+  Store,
+  UploadCloud,
+  MapPin,
+  ArrowLeft
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
@@ -11,7 +12,6 @@ import { serverUrl } from "../App";
 import { setMyShopData } from "../redux/ownerSlice";
 import { ClipLoader } from "react-spinners";
 import toast from "react-hot-toast";
-import { TbArrowLeft } from "react-icons/tb";
 
 const CreateEditShop = () => {
   const navigate = useNavigate();
@@ -27,8 +27,8 @@ const CreateEditShop = () => {
   const [address, setAddress] = useState(
     myShopData?.address || currentAddress || "",
   );
-  const [cityValue, setCityValue] = useState(myShopData?.city || city || "");
-  const [state, setState] = useState(myShopData?.state || currentState || "");
+  const cityValue = myShopData?.city || city || "";
+  const state = myShopData?.state || currentState || "";
   const [frontendImage, setFrontendImage] = useState(myShopData?.image || null);
   const [backendImage, setBackendImage] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -83,29 +83,26 @@ const CreateEditShop = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-rose-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-20">
+    <div className="min-h-screen relative bg-bg-secondary text-text-primary overflow-hidden pb-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-20 relative z-10">
         <button
           onClick={() => navigate(-1)}
-          className="group flex items-center gap-2 h-10 px-4 bg-white border border-gray-200 rounded-2xl text-gray-600 font-bold text-[11px] uppercase tracking-wide shadow-sm hover:bg-orange-50 hover:border-[#ff4d2d]/30 hover:text-[#ff4d2d] hover:shadow-md active:scale-95 transition-all duration-200 cursor-pointer mb-7"
+          className="group flex items-center gap-2 h-10 px-5 bg-bg-card border border-border rounded-xl text-text-secondary font-bold text-[10px] uppercase tracking-widest hover:border-brand hover:text-brand shadow-sm active:scale-95 transition-all duration-300 mb-8"
         >
-          <TbArrowLeft
-            size={16}
-            className="group-hover:-translate-x-0.5 transition-transform duration-200"
+          <ArrowLeft
+            size={14}
           />
-          Back
+          Go Back
         </button>
 
         {/* Header */}
-        <header className="mb-12 text-center md:text-left">
-          <p className="text-[#ff4d2d] font-black text-[10px] uppercase tracking-[0.3em] mb-2">
+        <header className="mb-12">
+          <p className="text-brand font-black text-[10px] uppercase tracking-[0.3em] mb-2">
             {myShopData ? "Manage Business" : "Shop Registration"}
           </p>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 tracking-tighter">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-text-primary tracking-tighter">
             {myShopData ? "Edit your" : "Open your"}{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ff4d2d] to-[#ff8e6d]">
-              {myShopData ? "Shop." : "Storefront."}
-            </span>
+            <span className="text-brand">{myShopData ? "Shop." : "Storefront."}</span>
           </h1>
         </header>
 
@@ -114,8 +111,8 @@ const CreateEditShop = () => {
           className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12"
         >
           {/* LEFT COLUMN – Image Upload Card (sticky) */}
-          <div className="lg:col-span-5">
-            <div className="sticky top-32 bg-white rounded-3xl border-2 border-gray-200/80 shadow-md shadow-gray-200/50 p-6">
+          <div className="lg:col-span-4">
+            <div className="sticky top-28 bg-bg-card rounded-[2rem] border border-border shadow-sm p-6 md:p-8">
               <div className="relative group aspect-square">
                 <input
                   type="file"
@@ -129,11 +126,10 @@ const CreateEditShop = () => {
                   htmlFor="shopImage"
                   className={`
                     flex flex-col items-center justify-center w-full h-full
-                    border-2 border-dashed rounded-2xl transition-all cursor-pointer overflow-hidden
-                    ${
-                      frontendImage
-                        ? "border-transparent bg-gray-50"
-                        : "border-gray-200/80 bg-gray-50/50 hover:border-[#ff4d2d]/30 hover:bg-orange-50/30"
+                    border-2 border-dashed rounded-[1.5rem] transition-all cursor-pointer overflow-hidden shadow-inner
+                    ${frontendImage
+                      ? "border-transparent bg-bg-secondary"
+                      : "border-border bg-bg-card hover:border-brand/50 hover:bg-brand/5 shadow-inner"
                     }
                     ${loading ? "opacity-50 pointer-events-none" : ""}
                   `}
@@ -142,95 +138,99 @@ const CreateEditShop = () => {
                     <img
                       src={frontendImage}
                       alt="Shop preview"
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                   ) : (
-                    <div className="flex flex-col items-center text-gray-400 group-hover:text-[#ff4d2d] transition-colors">
-                      <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center shadow-sm mb-4 border-2 border-gray-200">
-                        <IoCloudUploadOutline
+                    <div className="flex flex-col items-center text-text-muted group-hover:text-brand transition-colors">
+                      <div className="w-16 h-16 bg-bg-secondary rounded-2xl flex items-center justify-center shadow-inner mb-4 border border-border group-hover:border-brand/30 transition-colors">
+                        <UploadCloud
                           size={32}
-                          className="text-gray-400 group-hover:text-[#ff4d2d]"
+                          className="text-text-muted group-hover:text-brand"
                         />
                       </div>
-                      <span className="font-black text-[10px] uppercase tracking-widest">
-                        Upload shop cover
+                      <span className="font-black text-[10px] uppercase tracking-widest text-text-secondary group-hover:text-brand">
+                        Upload Cover
                       </span>
-                      <span className="text-[8px] text-gray-400 mt-1">
+                      <span className="text-[9px] text-text-muted font-bold mt-2 uppercase tracking-wide">
                         PNG or JPG, up to 5MB
                       </span>
                     </div>
                   )}
                 </label>
               </div>
-              <p className="text-center mt-4 text-[9px] font-bold text-gray-400 uppercase tracking-widest">
-                High‑quality images attract more customers
+              <p className="text-center mt-6 text-[9px] font-bold text-text-muted uppercase tracking-widest flex items-center justify-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-brand animate-pulse" />
+                High-quality images attract more customers
               </p>
             </div>
           </div>
 
           {/* RIGHT COLUMN – Form Fields Card */}
-          <div className="lg:col-span-7 space-y-6">
-            <div className="bg-white rounded-3xl border-2 border-gray-200/80 shadow-md shadow-gray-200/50 p-8 md:p-10 space-y-8">
+          <div className="lg:col-span-8 space-y-6">
+            <div className="bg-bg-card rounded-[2.5rem] border border-border shadow-sm p-8 md:p-10 space-y-8 relative overflow-hidden">
               {/* Shop Name */}
-              <div className="space-y-2">
-                <label className="text-[9px] font-black uppercase tracking-widest text-gray-400 flex items-center gap-1.5">
-                  <IoStorefrontOutline size={12} />
-                  Business name
+              <div className="space-y-3 relative z-10">
+                <label className="text-[10px] font-black uppercase tracking-widest text-text-muted flex items-center gap-2 ml-1">
+                  <Store size={14} className="text-text-muted" />
+                  Business Name
                 </label>
-                <input
-                  type="text"
-                  className="w-full bg-gray-50 border-2 border-gray-200/80 focus:border-[#ff4d2d] focus:ring-2 focus:ring-[#ff4d2d]/10 px-5 py-3.5 rounded-2xl text-sm font-bold outline-none transition-all placeholder:text-gray-400"
-                  placeholder="THE ROYAL BAKERS"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  disabled={loading}
-                  required
-                />
+                <div className="relative group">
+                  <input
+                    type="text"
+                    className="w-full bg-bg-secondary border border-border focus:border-brand focus:bg-white px-6 py-4 rounded-xl text-sm font-bold text-text-primary outline-none transition-all placeholder:text-text-muted shadow-inner focus:shadow-md"
+                    placeholder="THE ROYAL BAKERS"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    disabled={loading}
+                    required
+                  />
+                </div>
               </div>
 
               {/* City & State – read-only */}
-              <div className="grid grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="text-[9px] font-black uppercase tracking-widest text-gray-400">
+              <div className="grid grid-cols-2 gap-6 relative z-10">
+                <div className="space-y-3">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-text-muted ml-1">
                     City
                   </label>
                   <input
                     type="text"
                     readOnly
-                    className="w-full bg-gray-100 border-2 border-gray-200/80 px-5 py-3.5 rounded-2xl text-sm font-bold text-gray-600 cursor-default outline-none"
+                    className="w-full bg-bg-tertiary border border-border px-6 py-4 rounded-xl text-sm font-bold text-text-muted cursor-not-allowed outline-none focus:border-border"
                     value={cityValue}
                   />
                 </div>
-                <div className="space-y-2">
-                  <label className="text-[9px] font-black uppercase tracking-widest text-gray-400">
+                <div className="space-y-3">
+                  <label className="text-[10px] font-black uppercase tracking-widest text-text-muted ml-1">
                     State
                   </label>
                   <input
                     type="text"
                     readOnly
-                    className="w-full bg-gray-100 border-2 border-gray-200/80 px-5 py-3.5 rounded-2xl text-sm font-bold text-gray-600 cursor-default outline-none"
+                    className="w-full bg-bg-tertiary border border-border px-6 py-4 rounded-xl text-sm font-bold text-text-muted cursor-not-allowed outline-none focus:border-border"
                     value={state}
                   />
                 </div>
               </div>
 
               {/* Address */}
-              <div className="space-y-2">
-                <label className="text-[9px] font-black uppercase tracking-widest text-gray-400 flex items-center gap-1.5">
-                  <IoLocationOutline size={12} />
-                  Business address
+              <div className="space-y-3 relative z-10">
+                <label className="text-[10px] font-black uppercase tracking-widest text-text-muted flex items-center gap-2 ml-1">
+                  <MapPin size={14} className="text-text-muted" />
+                  Business Address
                 </label>
                 <textarea
                   rows={3}
-                  className="w-full bg-gray-50 border-2 border-gray-200/80 focus:border-[#ff4d2d] focus:ring-2 focus:ring-[#ff4d2d]/10 px-5 py-3.5 rounded-2xl text-sm font-bold outline-none transition-all placeholder:text-gray-400 resize-none"
+                  className="w-full bg-bg-tertiary border border-border focus:border-brand focus:ring-1 focus:ring-brand px-6 py-4 rounded-xl text-sm font-bold text-text-primary outline-none transition-all placeholder:text-text-muted resize-none"
                   placeholder="Street, area, landmark…"
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   disabled={loading}
                   required
                 />
-                <p className="text-[8px] font-bold uppercase tracking-wider text-[#ff4d2d] mt-1 flex items-center gap-1">
-                  <span>📍</span> GPS location synced from your profile
+                <p className="text-[9px] font-bold uppercase tracking-widest text-brand mt-2 flex items-center gap-1.5 px-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-brand-glow animate-pulse" />
+                  GPS location automatically synced from profile
                 </p>
               </div>
             </div>
@@ -239,14 +239,14 @@ const CreateEditShop = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-[#ff4d2d] to-[#ff6b4a] text-white py-5 rounded-2xl font-black text-sm uppercase tracking-wider shadow-md shadow-orange-200 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 active:scale-95 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+              className="w-full primary-button py-5 rounded-2xl font-black text-[13px] uppercase tracking-[0.15em] shadow-lg hover:-translate-y-0.5 active:scale-95 transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-3 relative z-10"
             >
               {loading ? (
-                <ClipLoader size={18} color="white" />
+                <Px size={20} color="white" />
               ) : (
                 <>
-                  <IoStorefrontOutline size={18} />
-                  {myShopData ? "Save Changes" : "Register Shop"}
+                  <Store size={20} />
+                  {myShopData ? "Save Config" : "Register Storefront"}
                 </>
               )}
             </button>

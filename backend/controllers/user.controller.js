@@ -45,6 +45,7 @@ export const updateUserLocation = async (req, res) => {
           type: "Point",
           coordinates: [Number(lon), Number(lat)], // [lng, lat]
         },
+        isOnline: true, // ✅ FIX: Mark user as online when location is updated
       },
       { new: true }
     );
@@ -106,5 +107,79 @@ export const updateProfile = async (req, res) => {
   } catch (error) {
     console.error("❌ Update profile error:", error);
     return res.status(500).json({ message: error.message || "Failed to update profile" });
+  }
+};
+
+export const toggleFavorite = async (req, res) => {
+  try {
+    const { itemId } = req.body;
+    const user = await User.findById(req.userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const index = user.favorites.indexOf(itemId);
+    if (index === -1) {
+      user.favorites.push(itemId);
+    } else {
+      user.favorites.splice(index, 1);
+    }
+
+    await user.save();
+
+    // ✅ Return populated favorites with full item + shop data
+    const populatedUser = await User.findById(req.userId).populate({
+      path: "favorites",
+      populate: { path: "shop", select: "name image city" }
+    });
+
+    res.status(200).json({ success: true, favorites: populatedUser.favorites });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to toggle favorite" });
+  }
+};
+
+export const getFavorites = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId).populate({
+      path: "favorites",
+      populate: { path: "shop", select: "name image city" }
+    });
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    res.status(200).json({ success: true, favorites: user.favorites });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch favorites" });
+  }
+};
+
+export const toggleDutyStatus = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    user.isDutyOn = !user.isDutyOn;
+    await user.save();
+
+    res.status(200).json({ success: true, isDutyOn: user.isDutyOn });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to toggle duty status" });
+  }
+};
+
+export const getUserById = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is required" });
+    }
+
+    const user = await User.findById(userId).select("-password");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.status(200).json(user);
+  } catch (error) {
+    console.error("Error in getUserById:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 };

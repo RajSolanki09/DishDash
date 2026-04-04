@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react";
-import {
-  IoReceiptOutline,
-} from "react-icons/io5";
-import { TbArrowLeft } from "react-icons/tb";
+import { Receipt, ArrowLeft, Loader } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import UserOrderCard from "../components/UserOrderCard";
 import OwnerOrderCard from "../components/OwnerOrderCard";
-import { ClipLoader } from "react-spinners";
 import Nav from "../components/Nav";
 import { setMyOrders } from "../redux/userSlice";
 
@@ -71,7 +67,7 @@ function MyOrders() {
       dispatch(setMyOrders(updatedOrders));
     };
 
-    const handleOtpSent = ({ orderId, message }) => {
+    const handleOtpSent = ({ message }) => {
       console.log("📧 OTP sent:", message);
     };
 
@@ -91,10 +87,9 @@ function MyOrders() {
   const isOwner = userData?.role === "owner";
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-rose-50">
+    <div className="min-h-screen relative bg-bg-secondary text-text-primary overflow-hidden pb-20">
       <Nav />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
 
         {/* ── HEADER ── */}
         <header className="mb-10">
@@ -102,40 +97,39 @@ function MyOrders() {
           {/* Back button */}
           <button
             onClick={() => navigate(-1)}
-            className="group flex items-center gap-2 h-10 px-4 mb-7 bg-white border border-gray-200 rounded-2xl text-gray-600 font-bold text-[11px] uppercase tracking-wide shadow-sm hover:bg-orange-50 hover:border-[#ff4d2d]/30 hover:text-[#ff4d2d] hover:shadow-md active:scale-95 transition-all duration-200 cursor-pointer"
+            className="group flex items-center gap-2 h-10 px-5 bg-bg-card border border-border rounded-xl text-text-secondary font-bold text-[10px] uppercase tracking-widest hover:border-brand hover:text-brand shadow-sm active:scale-95 transition-all duration-300 mb-8"
           >
-            <TbArrowLeft
-              size={16}
-              className="group-hover:-translate-x-0.5 transition-transform duration-200"
+            <ArrowLeft
+              size={14}
             />
-            Back
+            Go Back
           </button>
 
           {/* Title + badge */}
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="text-[10px] font-black text-[#ff4d2d] uppercase tracking-[0.25em] mb-2">
-                {isOwner ? "Shop Management" : "Order Tracking"}
+              <p className="text-[10px] font-black text-brand uppercase tracking-[0.25em] mb-3">
+                {isOwner ? "Shop Management" : "Order History"}
               </p>
-              <h1 className="text-3xl md:text-4xl font-black text-gray-900 tracking-tighter leading-none">
+              <h1 className="text-4xl md:text-5xl font-black text-text-primary tracking-tighter leading-none">
                 {isOwner ? "Shop" : "My"}{" "}
-                <span className="text-[#ff4d2d]">Orders.</span>
+                <span className="text-brand">Orders.</span>
               </h1>
-              <p className="text-gray-400 font-medium text-sm mt-2">
+              <p className="text-text-secondary font-medium text-sm mt-3 tracking-wide">
                 {isOwner
-                  ? "Manage incoming orders and update status"
+                  ? "Manage incoming orders and update status instantly"
                   : "Track your delicious orders in real-time"}
               </p>
             </div>
 
             {/* Live count badge */}
             {!loading && myOrders?.length > 0 && (
-              <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-[#ff4d2d] to-[#ff6b4a] rounded-2xl shadow-md shadow-orange-200">
+              <div className="flex items-center gap-2 bg-brand/5 border border-brand/10 px-4 py-2 rounded-xl shadow-sm">
                 <span className="relative flex h-2 w-2 shrink-0">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-white" />
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand opacity-75" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-brand" />
                 </span>
-                <span className="text-white text-[10px] font-black uppercase tracking-widest">
+                <span className="text-brand text-[10px] font-black uppercase tracking-widest">
                   {myOrders.length} {myOrders.length === 1 ? "Order" : "Orders"}
                 </span>
               </div>
@@ -144,47 +138,47 @@ function MyOrders() {
         </header>
 
         {/* ── CONTENT ── */}
-        <main>
+        <main className="relative z-10">
           {/* Loading */}
           {loading ? (
-            <div className="bg-white rounded-3xl border border-gray-100 shadow-md shadow-gray-100/40 py-28 flex flex-col items-center justify-center">
-              <ClipLoader size={40} color="#ff4d2d" speedMultiplier={0.7} />
-              <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.25em] mt-6">
+            <div className="bg-bg-card border border-border rounded-[2.5rem] py-28 flex flex-col items-center justify-center shadow-sm">
+              <Loader className="animate-spin text-brand relative z-10" size={40} />
+              <p className="text-[10px] font-black text-text-muted uppercase tracking-widest mt-6 relative z-10 animate-pulse">
                 Fetching your orders
               </p>
-              <p className="text-[10px] text-gray-300 font-medium mt-1.5">
+              <p className="text-[12px] text-text-secondary font-bold mt-2 relative z-10 tracking-widest">
                 Just a moment...
               </p>
             </div>
 
           ) : !myOrders || myOrders.length === 0 ? (
             /* Empty state */
-            <div className="bg-white rounded-3xl border border-gray-100 shadow-md shadow-gray-100/40 py-20 px-8 flex flex-col items-center text-center">
-              <div className="w-16 h-16 bg-orange-50 rounded-full flex items-center justify-center mb-5">
-                <IoReceiptOutline size={28} className="text-[#ff4d2d]" />
+            <div className="bg-bg-card border border-border rounded-[2.5rem] py-24 px-8 flex flex-col items-center text-center shadow-sm">
+              <div className="w-20 h-20 bg-bg-secondary rounded-2xl flex items-center justify-center mb-6 border border-border relative z-10 shadow-inner">
+                <Receipt size={36} className="text-text-muted" />
               </div>
-              <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2">
+              <p className="text-[10px] font-black text-text-muted uppercase tracking-widest mb-3 relative z-10">
                 {isOwner ? "No sales yet" : "Nothing here yet"}
               </p>
-              <h2 className="text-xl font-black text-gray-900 tracking-tight mb-2">
+              <h2 className="text-2xl font-black text-text-primary tracking-tight mb-4 relative z-10">
                 {isOwner ? "No orders received" : "You haven't ordered yet"}
               </h2>
-              <p className="text-gray-400 text-sm font-medium mb-8 max-w-xs">
+              <p className="text-text-secondary text-[15px] font-medium mb-10 max-w-sm relative z-10 leading-relaxed">
                 {isOwner
-                  ? "Your incoming orders will appear here once customers start ordering."
-                  : "Explore restaurants and place your first order!"}
+                  ? "Incoming orders from hungry customers will appear right here."
+                  : "Explore the best local restaurants and place your first premium order!"}
               </p>
               <button
-                className="px-8 py-3.5 bg-gradient-to-r from-[#ff4d2d] to-[#ff6b4a] text-white rounded-2xl font-black text-[11px] uppercase tracking-[0.15em] shadow-lg shadow-orange-200 hover:shadow-xl hover:shadow-orange-200 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all duration-200 cursor-pointer"
+                className="primary-button px-10 py-4 rounded-xl font-black text-[12px] uppercase tracking-widest relative z-10"
                 onClick={() => navigate("/")}
               >
-                {isOwner ? "Check My Menu" : "Browse Food"}
+                {isOwner ? "Check My Menu" : "Explore Menu"}
               </button>
             </div>
 
           ) : (
             /* Orders list */
-            <div className="grid gap-5">
+            <div className="grid gap-6 auto-rows-max">
               {myOrders.map((order) => {
                 if (!isOwner) {
                   return <UserOrderCard key={order._id} data={order} />;
@@ -211,9 +205,9 @@ function MyOrders() {
 
         {/* Footer label */}
         {!loading && myOrders?.length > 0 && (
-          <div className="mt-14 text-center">
-            <p className="text-[9px] font-bold text-gray-300 uppercase tracking-[0.3em]">
-              Vingo • Order Management
+          <div className="mt-16 text-center">
+            <p className="text-[10px] font-bold text-text-muted uppercase tracking-[0.3em]">
+              Vingo • Order Management System
             </p>
           </div>
         )}

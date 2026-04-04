@@ -58,6 +58,11 @@ export const signIn = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
+    if (!user.password) {
+      console.log('❌ No password set (Google auth user):', email);
+      return res.status(400).json({ message: "This account was created with Google. Please use Google Sign-In." });
+    }
+
     const isMatch = await bcrypt.compare(password, user.password);
     
     if (!isMatch) {
@@ -188,9 +193,17 @@ export const googleAuth = async (req, res) => {
         role,
         location: {
           type: "Point",
-          coordinates: [Number(lon), Number(lat)] // 👈 GeoJSON format
+          coordinates: [Number(lon), Number(lat)]
         }
       });
+    } else {
+      if (lat !== undefined && lon !== undefined) {
+        user.location = {
+          type: "Point",
+          coordinates: [Number(lon), Number(lat)]
+        };
+        await user.save();
+      }
     }
 
     const token = await genToken(user._id);

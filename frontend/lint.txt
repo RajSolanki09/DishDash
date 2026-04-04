@@ -1,0 +1,48 @@
+
+> frontend@0.0.0 lint
+> eslint .
+
+
+D:\Vingo MERN-Project\frontend\firebase.js
+  4:10  error  'getAnalytics' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+D:\Vingo MERN-Project\frontend\src\App.jsx
+  42:10  error  'userLocation' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+
+D:\Vingo MERN-Project\frontend\src\components\DeliveryBoy.jsx
+  186:6  warning  React Hook useEffect has missing dependencies: 'currentOrder' and 'fetchTodayEarnings'. Either include them or remove the dependency array  react-hooks/exhaustive-deps
+
+D:\Vingo MERN-Project\frontend\src\components\OwnerOrderCard.jsx
+  30:3  error  React Hook "useEffect" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?  react-hooks/rules-of-hooks
+  65:3  error  React Hook "useEffect" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?  react-hooks/rules-of-hooks
+
+D:\Vingo MERN-Project\frontend\src\components\UserOrderCard.jsx
+  47:47  error  React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?  react-hooks/rules-of-hooks
+  48:45  error  React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?  react-hooks/rules-of-hooks
+  49:35  error  React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?  react-hooks/rules-of-hooks
+  50:37  error  React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render. Did you accidentally call a React Hook after an early return?  react-hooks/rules-of-hooks
+
+D:\Vingo MERN-Project\frontend\src\pages\CheckOut.jsx
+  186:14  error  'error' is defined but never used  no-unused-vars
+  243:14  error  'error' is defined but never used  no-unused-vars
+
+D:\Vingo MERN-Project\frontend\src\pages\CreateEditShop.jsx
+  30:21  error  'setCityValue' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  31:17  error  'setState' is assigned a value but never used. Allowed unused vars must match /^[A-Z_]/u      no-unused-vars
+
+D:\Vingo MERN-Project\frontend\src\pages\Deliverydashboard.jsx
+  328:67  error  'idx' is defined but never used  no-unused-vars
+
+D:\Vingo MERN-Project\frontend\src\pages\MyOrders.jsx
+   9:8   error  'gsap' is defined but never used. Allowed unused vars must match /^[A-Z_]/u  no-unused-vars
+  71:30  error  'orderId' is defined but never used                                          no-unused-vars
+
+D:\Vingo MERN-Project\frontend\src\pages\SignUp.jsx
+   78:8  error  'geoError' is defined but never used  no-unused-vars
+  115:8  error  'geoError' is defined but never used  no-unused-vars
+
+D:\Vingo MERN-Project\frontend\src\pages\TrackOrderPage.jsx
+  54:8  warning  React Hook useEffect has a missing dependency: 'handleGetOrderById'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+✖ 19 problems (17 errors, 2 warnings)
+

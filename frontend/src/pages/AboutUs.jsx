@@ -1,9 +1,22 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { FaRocket, FaHeart, FaUsers, FaShieldAlt } from "react-icons/fa";
-import { IoRestaurantSharp, IoSpeedometer } from "react-icons/io5";
-import { MdDeliveryDining, MdVerified } from "react-icons/md";
-import { BiSupport } from "react-icons/bi";
+import {
+  Rocket,
+  Heart,
+  Users,
+  Shield,
+  Utensils,
+  Zap,
+  Bike,
+  CheckCircle,
+  Headphones,
+  Sparkles,
+  Star,
+  Briefcase,
+  Code,
+  BarChart3,
+  Smile
+} from "lucide-react";
 import Nav from "../components/Nav";
 
 const AboutUs = () => {
@@ -11,40 +24,40 @@ const AboutUs = () => {
 
   const features = [
     {
-      icon: <IoRestaurantSharp size={28} />,
+      icon: <Utensils size={28} />,
       title: "Local Restaurants",
       description: "Partner with authentic local eateries to bring you the best food in your city",
-      gradient: "from-orange-400 to-red-500"
+      gradient: "from-brand to-brand-glow"
     },
     {
-      icon: <IoSpeedometer size={28} />,
+      icon: <Zap size={28} />,
       title: "Lightning Fast",
       description: "Real-time order tracking and optimized delivery routes for speed",
-      gradient: "from-blue-400 to-cyan-500"
+      gradient: "from-blue-500 to-cyan-400"
     },
     {
-      icon: <MdDeliveryDining size={28} />,
+      icon: <Bike size={28} />,
       title: "Reliable Delivery",
       description: "Professional delivery partners ensuring your food arrives fresh and on time",
-      gradient: "from-purple-400 to-pink-500"
+      gradient: "from-fuchsia-500 to-pink-500"
     },
     {
-      icon: <FaShieldAlt size={28} />,
+      icon: <Shield size={28} />,
       title: "Secure Payments",
-      description: "Safe and encrypted payment processing for peace of mind",
-      gradient: "from-green-400 to-emerald-500"
+      description: "Safe and encrypted payment processing for absolute peace of mind",
+      gradient: "from-emerald-500 to-green-400"
     },
     {
-      icon: <MdVerified size={28} />,
+      icon: <CheckCircle size={28} />,
       title: "Quality Assured",
       description: "Every restaurant is verified and food quality is our top priority",
-      gradient: "from-yellow-400 to-orange-500"
+      gradient: "from-amber-500 to-orange-400"
     },
     {
-      icon: <BiSupport size={28} />,
+      icon: <Headphones size={28} />,
       title: "24/7 Support",
-      description: "Our dedicated support team is always here to help you",
-      gradient: "from-indigo-400 to-purple-500"
+      description: "Our dedicated artisan support team is always here to help you",
+      gradient: "from-indigo-500 to-purple-400"
     }
   ];
 
@@ -59,80 +72,87 @@ const AboutUs = () => {
     {
       name: "Sarah Johnson",
       role: "Founder & CEO",
-      emoji: "👩‍💼",
+      icon: <Briefcase size={32} />,
+      gradient: "from-brand to-[#F05A67]",
       description: "10+ years in food tech industry"
     },
     {
       name: "Mike Chen",
       role: "Head of Operations",
-      emoji: "👨‍💻",
+      icon: <BarChart3 size={32} />,
+      gradient: "from-violet-600 to-purple-600",
       description: "Expert in logistics & delivery"
     },
     {
       name: "Emily Rodriguez",
       role: "Customer Success",
-      emoji: "👩‍🎤",
+      icon: <Smile size={32} />,
+      gradient: "from-emerald-600 to-teal-500",
       description: "Passionate about customer experience"
     },
     {
       name: "David Kumar",
       role: "Tech Lead",
-      emoji: "👨‍🔬",
+      icon: <Code size={32} />,
+      gradient: "from-amber-500 to-orange-500",
       description: "Building scalable solutions"
     }
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-orange-50/30 to-rose-50/40">
+    <div className="min-h-screen bg-bg-secondary text-text-primary pb-10">
       <Nav />
-      
+
       {/* HERO SECTION */}
-      <section className="relative overflow-hidden pt-20 pb-32 px-4">
-        {/* Animated Background Elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-orange-200/30 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-rose-200/30 rounded-full blur-3xl animate-pulse delay-700" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-br from-orange-100/20 to-pink-100/20 rounded-full blur-3xl" />
+      <section className="relative overflow-hidden pt-32 pb-32 px-4 border-b border-border">
+        {/* Background food image */}
+        <div className="absolute inset-0">
+          <img
+            src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1600&q=80"
+            alt="Delicious food spread"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-bg-secondary/85 backdrop-blur-sm" />
         </div>
 
-        <div className="max-w-6xl mx-auto relative z-10">
-          <div className="text-center space-y-8">
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="text-center space-y-10">
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/80 backdrop-blur-sm rounded-full border border-orange-200/50 shadow-lg shadow-orange-100/50">
-              <span className="text-2xl">🍕</span>
-              <span className="text-sm font-black text-gray-700 uppercase tracking-wider">About Vingo</span>
+            <div className="inline-flex items-center gap-3 px-6 py-3 bg-bg-card rounded-full border border-border shadow-sm animate-in fade-in slide-in-from-top-4 duration-700">
+              <Utensils size={20} className="text-brand" />
+              <span className="text-[11px] font-black text-text-secondary uppercase tracking-[0.2em]">About Vingo</span>
             </div>
 
             {/* Main Heading */}
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black leading-[0.95] tracking-tight">
-              <span className="block bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent">
+            <h1 className="text-6xl md:text-8xl lg:text-9xl font-black leading-[0.9] tracking-tighter animate-in fade-in slide-in-from-bottom-8 duration-1000">
+              <span className="block text-text-primary">
                 Bringing Your
               </span>
-              <span className="block bg-gradient-to-r from-[#ff4d2d] via-[#ff6b4a] to-[#ff8e6d] bg-clip-text text-transparent mt-2">
+              <span className="block text-brand mt-2">
                 Favorite Food
               </span>
-              <span className="block text-gray-900 mt-2">
+              <span className="block text-text-secondary mt-2">
                 To Your Door
               </span>
             </h1>
 
             {/* Subtitle */}
-            <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed font-medium">
-              We're on a mission to connect food lovers with the best local restaurants, 
+            <p className="text-lg md:text-2xl text-text-secondary max-w-3xl mx-auto leading-relaxed font-bold tracking-wide animate-in fade-in duration-1000 delay-300">
+              We're on a mission to connect food lovers with the best local restaurants,
               creating memorable dining experiences one delivery at a time.
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-6 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-500">
               <button
                 onClick={() => navigate("/")}
-                className="w-full sm:w-auto px-10 py-5 bg-gradient-to-r from-[#ff4d2d] to-[#ff6b4a] text-white rounded-2xl font-black text-sm uppercase tracking-[0.15em] shadow-2xl shadow-orange-300/50 hover:shadow-orange-400/60 hover:-translate-y-1 active:scale-95 transition-all duration-300"
+                className="w-full sm:w-auto primary-button px-12 py-5 rounded-2xl font-black text-[13px] uppercase tracking-widest shadow-md hover:-translate-y-1 active:scale-95 transition-all duration-300"
               >
                 Order Now
               </button>
               <button
                 onClick={() => navigate("/create-edit-shop")}
-                className="w-full sm:w-auto px-10 py-5 bg-white text-gray-900 rounded-2xl font-bold text-sm border-2 border-gray-200 hover:border-[#ff4d2d] hover:text-[#ff4d2d] hover:-translate-y-1 active:scale-95 transition-all duration-300 shadow-lg"
+                className="w-full sm:w-auto px-12 py-5 bg-bg-card text-text-primary rounded-2xl font-black text-[13px] uppercase tracking-widest border border-border hover:bg-bg-secondary hover:border-brand/50 hover:-translate-y-1 active:scale-95 transition-all duration-300 shadow-md"
               >
                 Partner With Us
               </button>
@@ -142,22 +162,22 @@ const AboutUs = () => {
       </section>
 
       {/* STATS SECTION */}
-      <section className="py-16 px-4 bg-gradient-to-br from-gray-900 via-gray-800 to-black relative overflow-hidden">
+      <section className="py-24 px-4 bg-bg-secondary relative overflow-hidden border-b border-border">
         {/* Grid Pattern Overlay */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,77,45,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,77,45,0.03)_1px,transparent_1px)] bg-[size:50px_50px]" />
-        
-        <div className="max-w-6xl mx-auto relative z-10">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.02)_1px,transparent_1px)] bg-[size:50px_50px]" />
+
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-12">
             {stats.map((stat, index) => (
               <div
                 key={index}
-                className="text-center group"
+                className="text-center group shadow-sm p-6 rounded-2xl bg-bg-card border border-border"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                <div className="text-4xl md:text-5xl lg:text-6xl font-black bg-gradient-to-r from-orange-400 via-rose-400 to-pink-400 bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300">
+                <div className="text-5xl md:text-6xl lg:text-7xl font-black text-text-primary group-hover:text-brand transition-all duration-500">
                   {stat.number}
                 </div>
-                <div className="text-gray-400 font-bold text-sm md:text-base mt-3 uppercase tracking-wider">
+                <div className="text-brand font-black text-[11px] md:text-[13px] mt-4 uppercase tracking-[0.2em]">
                   {stat.label}
                 </div>
               </div>
@@ -167,50 +187,62 @@ const AboutUs = () => {
       </section>
 
       {/* OUR MISSION */}
-      <section className="py-24 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
-            <div className="space-y-6">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-100 rounded-full">
-                <FaRocket className="text-[#ff4d2d]" size={16} />
-                <span className="text-xs font-black text-[#ff4d2d] uppercase tracking-wider">Our Mission</span>
-              </div>
-              
-              <h2 className="text-4xl md:text-5xl font-black leading-tight text-gray-900">
-                Redefining Food Delivery
-              </h2>
-              
-              <p className="text-gray-600 text-lg leading-relaxed font-medium">
-                Founded in 2024, Vingo was born from a simple idea: everyone deserves access to 
-                delicious, quality food from their favorite local restaurants, delivered with care 
-                and efficiency.
-              </p>
-              
-              <p className="text-gray-600 text-lg leading-relaxed font-medium">
-                We believe in supporting local businesses, empowering delivery partners, and 
-                creating seamless experiences for food lovers. Our technology connects the dots 
-                between hunger and happiness.
-              </p>
+      <section className="py-32 px-4 relative overflow-hidden border-b border-border">
+        {/* Decorative background orb */}
+        <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-brand/10 rounded-full blur-[100px] -translate-y-1/2 -translate-x-1/2 pointer-events-none" />
 
-              <div className="flex items-center gap-4 pt-4">
-                <div className="flex items-center gap-2 px-4 py-3 bg-gradient-to-r from-orange-50 to-rose-50 rounded-xl border border-orange-100">
-                  <FaHeart className="text-[#ff4d2d]" size={20} />
-                  <span className="font-black text-gray-900 text-sm">Made with Love</span>
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="grid md:grid-cols-2 gap-20 items-center">
+            <div className="space-y-8">
+              <div className="inline-flex items-center gap-3 px-5 py-2.5 bg-brand/5 border border-brand/10 rounded-full shadow-sm">
+                <Rocket className="text-brand" size={16} />
+                <span className="text-brand uppercase tracking-[0.2em]">Our Mission</span>
+              </div>
+
+              <h2 className="text-5xl md:text-6xl font-black leading-tight text-text-primary tracking-tighter">
+                Redefining Food <span className="text-brand">Delivery.</span>
+              </h2>
+
+              <div className="space-y-6 text-text-secondary text-lg leading-relaxed font-medium">
+                <p>
+                  Founded with a singular vision, Vingo bridges the gap between culinary excellence and your dining table, elevating the daily ritual of eating into a premium experience.
+                </p>
+                <p>
+                  We champion local artisans and empower an elite fleet of delivery partners, forging a robust ecosystem where technology meets taste.
+                </p>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-5 pt-6">
+                <div className="flex items-center gap-3 px-6 py-4 bg-bg-card border border-border rounded-2xl shadow-sm">
+                  <Heart className="text-brand fill-brand" size={20} />
+                  <span className="font-black text-text-primary text-xs uppercase tracking-widest">Crafted with Care</span>
                 </div>
-                <div className="flex items-center gap-2 px-4 py-3 bg-gradient-to-r from-orange-50 to-rose-50 rounded-xl border border-orange-100">
-                  <FaUsers className="text-[#ff4d2d]" size={20} />
-                  <span className="font-black text-gray-900 text-sm">Community First</span>
+                <div className="flex items-center gap-3 px-6 py-4 bg-bg-card border border-border rounded-2xl shadow-sm">
+                  <Users className="text-brand" size={20} />
+                  <span className="font-black text-text-primary text-xs uppercase tracking-widest">Community Driven</span>
                 </div>
               </div>
             </div>
 
-            <div className="relative">
-              <div className="aspect-square bg-gradient-to-br from-orange-100 via-rose-100 to-pink-100 rounded-[3rem] relative overflow-hidden shadow-2xl shadow-orange-200/40">
-                {/* Decorative Elements */}
-                <div className="absolute top-10 left-10 w-32 h-32 bg-white/60 backdrop-blur-sm rounded-3xl rotate-12 shadow-xl" />
-                <div className="absolute bottom-10 right-10 w-40 h-40 bg-white/60 backdrop-blur-sm rounded-3xl -rotate-12 shadow-xl" />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-9xl">
-                  🍔
+            <div className="relative group">
+              <div className="aspect-square bg-bg-card rounded-[3rem] p-1 border border-border relative overflow-hidden shadow-md group-hover:border-brand/20 transition-colors duration-500">
+                <div className="w-full h-full rounded-[2.8rem] relative overflow-hidden">
+                  <img
+                    src="https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=800&q=80"
+                    alt="Indian thali"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+
+                  {/* Floating badges */}
+                  <div className="absolute top-8 left-8 flex items-center gap-2.5 px-4 py-2.5 bg-white/90 backdrop-blur-md rounded-2xl shadow-lg">
+                    <Heart size={16} className="text-brand fill-brand" />
+                    <span className="text-[11px] font-black text-text-primary uppercase tracking-wider">Fresh & Hot</span>
+                  </div>
+                  <div className="absolute bottom-8 right-8 flex items-center gap-2.5 px-4 py-2.5 bg-brand rounded-2xl shadow-lg">
+                    <Bike size={16} className="text-white" />
+                    <span className="text-[11px] font-black text-white uppercase tracking-wider">30 min delivery</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -219,31 +251,34 @@ const AboutUs = () => {
       </section>
 
       {/* FEATURES GRID */}
-      <section className="py-24 px-4 bg-gradient-to-br from-white to-orange-50/30">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center space-y-4 mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full border border-orange-200 shadow-lg shadow-orange-100/50">
-              <span className="text-xl">✨</span>
-              <span className="text-xs font-black text-gray-700 uppercase tracking-wider">Why Choose Us</span>
+      <section className="py-32 px-4 relative border-b border-border">
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="text-center space-y-6 mb-20 animate-in fade-in slide-in-from-bottom-8 duration-700 block">
+            <div className="inline-flex items-center gap-3 px-5 py-2.5 bg-bg-card rounded-full border border-border shadow-sm">
+              <Sparkles size={18} className="text-brand" />
+              <span className="text-[10px] font-black text-text-secondary uppercase tracking-[0.2em]">The Vingo Standard</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-black text-gray-900">
-              What Makes Us Different
+            <h2 className="text-5xl md:text-6xl font-black text-text-primary tracking-tighter">
+              What Sets Us <span className="text-brand">Apart</span>
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {features.map((feature, index) => (
               <div
                 key={index}
-                className="group bg-white rounded-3xl p-8 border border-gray-100 shadow-lg shadow-gray-100/40 hover:shadow-2xl hover:shadow-orange-200/40 hover:-translate-y-2 transition-all duration-300"
+                className="group bg-bg-card rounded-[2rem] p-10 border border-border hover:border-brand/20 hover:shadow-lg transition-all duration-500 shadow-sm overflow-hidden relative"
               >
-                <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center text-white shadow-lg mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300`}>
+                <div className="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-10 transition-opacity duration-500 pointer-events-none ${feature.gradient}" />
+
+                <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center text-white shadow-md mb-8 group-hover:scale-110 group-hover:rotate-[5deg] transition-all duration-500`}>
                   {feature.icon}
                 </div>
-                <h3 className="text-xl font-black text-gray-900 mb-3">
+                <h3 className="text-xl font-black text-text-primary tracking-wide mb-4 flex items-center gap-3">
+                  <div className="w-1.5 h-1.5 rounded-full bg-brand group-hover:animate-ping shadow-sm" />
                   {feature.title}
                 </h3>
-                <p className="text-gray-600 leading-relaxed font-medium">
+                <p className="text-text-secondary leading-relaxed font-bold text-sm tracking-wide">
                   {feature.description}
                 </p>
               </div>
@@ -253,36 +288,36 @@ const AboutUs = () => {
       </section>
 
       {/* TEAM SECTION */}
-      <section className="py-24 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center space-y-4 mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-100 rounded-full">
-              <FaUsers className="text-[#ff4d2d]" size={16} />
-              <span className="text-xs font-black text-[#ff4d2d] uppercase tracking-wider">Our Team</span>
+      <section className="py-32 px-4 bg-bg-secondary relative border-b border-border">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center space-y-6 mb-20">
+            <div className="inline-flex items-center gap-3 px-5 py-2.5 bg-brand/5 rounded-full border border-brand/10 shadow-sm">
+              <Users className="text-brand" size={16} />
+              <span className="text-brand uppercase tracking-[0.2em]">Leadership</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-black text-gray-900">
-              Meet The Minds Behind Vingo
+            <h2 className="text-5xl md:text-6xl font-black text-text-primary tracking-tighter">
+              Meet The <span className="text-brand">Minds</span>
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-10">
             {team.map((member, index) => (
               <div
                 key={index}
-                className="group text-center"
+                className="group text-center bg-bg-card p-8 rounded-[2rem] border border-border hover:border-brand/20 transition-all duration-300 shadow-md"
               >
-                <div className="relative mb-6">
-                  <div className="w-40 h-40 mx-auto rounded-3xl bg-gradient-to-br from-orange-100 via-rose-100 to-pink-100 flex items-center justify-center text-7xl border-4 border-white shadow-2xl shadow-orange-200/40 group-hover:scale-105 group-hover:rotate-3 transition-all duration-300">
-                    {member.emoji}
+                <div className="relative mb-8">
+                  <div className={`w-24 h-24 mx-auto rounded-3xl bg-gradient-to-br ${member.gradient} flex items-center justify-center text-white shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all duration-500`}>
+                    {member.icon}
                   </div>
                 </div>
-                <h3 className="text-xl font-black text-gray-900 mb-1">
+                <h3 className="text-xl font-black text-text-primary tracking-tight mb-2">
                   {member.name}
                 </h3>
-                <p className="text-[#ff4d2d] font-bold text-sm mb-2 uppercase tracking-wider">
+                <p className="text-brand font-black text-[11px] mb-4 uppercase tracking-widest">
                   {member.role}
                 </p>
-                <p className="text-gray-600 text-sm font-medium">
+                <p className="text-text-secondary text-xs font-bold leading-relaxed tracking-wide">
                   {member.description}
                 </p>
               </div>
@@ -292,32 +327,36 @@ const AboutUs = () => {
       </section>
 
       {/* CTA SECTION */}
-      <section className="py-24 px-4 bg-gradient-to-br from-gray-900 via-gray-800 to-black relative overflow-hidden">
+      <section className="py-32 px-4 relative overflow-hidden">
         {/* Animated Background */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,77,45,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,77,45,0.05)_1px,transparent_1px)] bg-[size:50px_50px] animate-pulse" />
-        
-        <div className="max-w-4xl mx-auto text-center relative z-10 space-y-8">
-          <div className="text-7xl mb-6">🚀</div>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand/10 rounded-full blur-[150px] animate-pulse" />
+        </div>
+
+        <div className="max-w-4xl mx-auto text-center relative z-10 space-y-10">
+          <div className="text-7xl mb-6 drop-shadow-[0_0_20px_rgba(255,255,255,0.2)] animate-bounce">
+            <Rocket size={70} className="text-brand" />
+          </div>
+          <h2 className="text-5xl md:text-6xl lg:text-7xl font-black text-text-primary leading-[1.1] tracking-tighter">
             Ready to Experience
             <br />
-            <span className="bg-gradient-to-r from-orange-400 via-rose-400 to-pink-400 bg-clip-text text-transparent">
-              Food Delivery Done Right?
+            <span className="text-brand">
+              Gastronomy Elevated?
             </span>
           </h2>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed font-medium">
-            Join thousands of happy customers who trust Vingo for their daily food cravings
+          <p className="text-lg md:text-xl text-text-secondary max-w-2xl mx-auto leading-relaxed font-bold tracking-wide">
+            Join the elite circle of connoisseurs who trust Vingo for their daily culinary adventures.
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-8">
             <button
               onClick={() => navigate("/")}
-              className="w-full sm:w-auto px-12 py-5 bg-gradient-to-r from-[#ff4d2d] to-[#ff6b4a] text-white rounded-2xl font-black text-sm uppercase tracking-[0.15em] shadow-2xl shadow-orange-500/50 hover:shadow-orange-500/70 hover:-translate-y-1 active:scale-95 transition-all duration-300"
+              className="w-full sm:w-auto primary-button px-12 py-5 rounded-2xl font-black text-[12px] uppercase tracking-widest shadow-md hover:-translate-y-1 active:scale-95 transition-all duration-300"
             >
               Start Ordering
             </button>
             <button
               onClick={() => navigate("/signup")}
-              className="w-full sm:w-auto px-12 py-5 bg-white/10 backdrop-blur-sm text-white rounded-2xl font-black text-sm uppercase tracking-[0.15em] border-2 border-white/20 hover:bg-white/20 hover:-translate-y-1 active:scale-95 transition-all duration-300"
+              className="w-full sm:w-auto px-12 py-5 bg-bg-card border border-border text-text-primary rounded-2xl font-black text-[12px] uppercase tracking-widest hover:bg-bg-secondary hover:border-brand/40 hover:-translate-y-1 active:scale-95 transition-all duration-300 shadow-md"
             >
               Create Account
             </button>
@@ -326,16 +365,16 @@ const AboutUs = () => {
       </section>
 
       {/* FOOTER */}
-      <footer className="bg-gray-900 text-gray-400 py-12 px-4 border-t border-gray-800">
-        <div className="max-w-6xl mx-auto text-center space-y-4">
-          <h3 className="text-2xl font-black bg-gradient-to-r from-orange-400 to-rose-400 bg-clip-text text-transparent">
-            Vingo<span className="text-orange-400">.</span>
+      <footer className="bg-bg-secondary text-text-muted py-16 px-4 border-t border-border relative z-10">
+        <div className="max-w-7xl mx-auto text-center space-y-6">
+          <h3 className="text-3xl font-black tracking-tighter text-text-primary">
+            Vingo<span className="text-brand">.</span>
           </h3>
-          <p className="text-sm font-medium">
-            Made with ❤️ for food lovers everywhere
+          <p className="text-[11px] font-black uppercase tracking-[0.3em]">
+            Curated with <Heart size={12} className="inline text-brand fill-brand" /> for Gastronomes Everywhere
           </p>
-          <p className="text-xs text-gray-500">
-            © 2024 Vingo. All rights reserved.
+          <p className="text-[10px] font-bold text-text-muted tracking-widest">
+            © {new Date().getFullYear()} Vingo. All rights reserved.
           </p>
         </div>
       </footer>
