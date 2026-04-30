@@ -72,7 +72,7 @@ const ForgotPassword = () => {
           {/* Logo */}
           <div className="text-center mb-10 relative z-10">
             <h1 className="text-4xl md:text-5xl font-black tracking-tighter text-text-primary">
-              Vingo.
+              DishDash.
             </h1>
           </div>
 

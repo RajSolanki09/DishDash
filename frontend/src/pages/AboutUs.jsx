@@ -120,7 +120,7 @@ const AboutUs = () => {
             {/* Badge */}
             <div className="inline-flex items-center gap-3 px-6 py-3 bg-bg-card rounded-full border border-border shadow-sm animate-in fade-in slide-in-from-top-4 duration-700">
               <Utensils size={20} className="text-brand" />
-              <span className="text-[11px] font-black text-text-secondary uppercase tracking-[0.2em]">About Vingo</span>
+              <span className="text-[11px] font-black text-text-secondary uppercase tracking-[0.2em]">About DishDash</span>
             </div>
 
             {/* Main Heading */}
@@ -205,7 +205,7 @@ const AboutUs = () => {
 
               <div className="space-y-6 text-text-secondary text-lg leading-relaxed font-medium">
                 <p>
-                  Founded with a singular vision, Vingo bridges the gap between culinary excellence and your dining table, elevating the daily ritual of eating into a premium experience.
+                  Founded with a singular vision, DishDash bridges the gap between culinary excellence and your dining table, elevating the daily ritual of eating into a premium experience.
                 </p>
                 <p>
                   We champion local artisans and empower an elite fleet of delivery partners, forging a robust ecosystem where technology meets taste.
@@ -256,7 +256,7 @@ const AboutUs = () => {
           <div className="text-center space-y-6 mb-20 animate-in fade-in slide-in-from-bottom-8 duration-700 block">
             <div className="inline-flex items-center gap-3 px-5 py-2.5 bg-bg-card rounded-full border border-border shadow-sm">
               <Sparkles size={18} className="text-brand" />
-              <span className="text-[10px] font-black text-text-secondary uppercase tracking-[0.2em]">The Vingo Standard</span>
+              <span className="text-[10px] font-black text-text-secondary uppercase tracking-[0.2em]">The DishDash Standard</span>
             </div>
             <h2 className="text-5xl md:text-6xl font-black text-text-primary tracking-tighter">
               What Sets Us <span className="text-brand">Apart</span>
@@ -345,7 +345,7 @@ const AboutUs = () => {
             </span>
           </h2>
           <p className="text-lg md:text-xl text-text-secondary max-w-2xl mx-auto leading-relaxed font-bold tracking-wide">
-            Join the elite circle of connoisseurs who trust Vingo for their daily culinary adventures.
+            Join the elite circle of connoisseurs who trust DishDash for their daily culinary adventures.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-8">
             <button
@@ -368,13 +368,13 @@ const AboutUs = () => {
       <footer className="bg-bg-secondary text-text-muted py-16 px-4 border-t border-border relative z-10">
         <div className="max-w-7xl mx-auto text-center space-y-6">
           <h3 className="text-3xl font-black tracking-tighter text-text-primary">
-            Vingo<span className="text-brand">.</span>
+            DishDash<span className="text-brand">.</span>
           </h3>
           <p className="text-[11px] font-black uppercase tracking-[0.3em]">
             Curated with <Heart size={12} className="inline text-brand fill-brand" /> for Gastronomes Everywhere
           </p>
           <p className="text-[10px] font-bold text-text-muted tracking-widest">
-            © {new Date().getFullYear()} Vingo. All rights reserved.
+            © {new Date().getFullYear()} DishDash. All rights reserved.
           </p>
         </div>
       </footer>

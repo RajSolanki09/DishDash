@@ -4,10 +4,10 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vingo - Food Delivery</title>
+    <title>DishDash - Food Delivery</title>
     <style>
       /* ═══════════════════════════════════════════════════════════════════
-          VINGO PREMIUM INITIAL LOADER
+          DISHDASH PREMIUM INITIAL LOADER
           Shows while React/JS loads - pure CSS animation
           Scoped to #initial-loader only - does NOT affect app layout
       ═══════════════════════════════════════════════════════════════════ */
@@ -345,27 +345,85 @@
       <div class="corner-accent bottom-right"></div>
 
       <div class="loader-logo">
-        <div class="loader-icon-wrapper">
-          <div class="loader-ring-outer"></div>
-          <div class="loader-ring-middle"></div>
-          <div class="loader-ring-inner"></div>
-          <div class="loader-v-icon">
-            <span>V</span>
+        <div class="noodle-box">
+          <div class="bowl">
+            <div class="noodle-strand strand-1"></div>
+            <div class="noodle-strand strand-2"></div>
+            <div class="noodle-strand strand-3"></div>
           </div>
+          <div class="chopstick stick-1"></div>
+          <div class="chopstick stick-2"></div>
         </div>
+        
         <div class="loader-brand">
-          <span class="loader-brand-text">Vingo</span>
+          <span class="loader-brand-text">DishDash</span>
           <span class="loader-brand-dot">.</span>
         </div>
-        <span class="loader-tagline">Premium Food Delivery</span>
+        <span class="loader-tagline">Preparing your feast</span>
       </div>
 
       <div class="loader-progress-wrapper">
         <div class="loader-progress-bar">
           <div class="loader-progress-fill"></div>
         </div>
-        <span class="loader-progress-text">Loading experience</span>
+        <span class="loader-progress-text">Slurping in progress</span>
       </div>
+
+      <style>
+        .noodle-box {
+          position: relative;
+          width: 120px;
+          height: 120px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-bottom: 20px;
+        }
+        .bowl {
+          position: absolute;
+          bottom: 20px;
+          width: 80px;
+          height: 40px;
+          background: #E23744;
+          border-radius: 0 0 40px 40px;
+          border-top: 4px solid #c12a35;
+          overflow: hidden;
+        }
+        .noodle-strand {
+          position: absolute;
+          bottom: 0;
+          width: 6px;
+          background: #FDE68A;
+          border-radius: 10px;
+          animation: noodle-up 2s infinite ease-in-out;
+        }
+        .strand-1 { left: 20px; height: 60px; animation-delay: 0s; }
+        .strand-2 { left: 35px; height: 80px; animation-delay: 0.2s; }
+        .strand-3 { left: 50px; height: 65px; animation-delay: 0.4s; }
+
+        @keyframes noodle-up {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-20px); }
+        }
+
+        .chopstick {
+          position: absolute;
+          width: 4px;
+          height: 80px;
+          background: #5C4033;
+          border-radius: 10px;
+          top: 0;
+          right: 20px;
+          transform-origin: bottom left;
+          animation: chopsticks-move 2s infinite ease-in-out;
+        }
+        .stick-2 { right: 35px; animation-delay: 0.2s; }
+
+        @keyframes chopsticks-move {
+          0%, 100% { transform: rotate(-15deg) translateY(0); }
+          50% { transform: rotate(-25deg) translateY(-10px); }
+        }
+      </style>
     </div>
 
     <div id="root"></div>

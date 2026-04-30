@@ -15,7 +15,7 @@ const userSlice = createSlice({
     notifications: [],
     searchResults:[],
     socket:null,
-    favoriteItems:[]  // ✅ Populated favorites with full item + shop data
+    favoriteItems:[]  
   },
   reducers: {
     setUserData: (state, action) => {

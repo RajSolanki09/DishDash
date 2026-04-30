@@ -71,7 +71,7 @@ const LandingPage = () => {
     { icon: <Zap size={24} className="text-amber-500" />, title: "Lightning Fast", desc: "Hot food at your door in 30 mins or less" },
     { icon: <ShieldCheck size={24} className="text-emerald-600" />, title: "100% Secure", desc: "Safe payments and verified restaurants" },
     { icon: <TrendingUp size={24} className="text-brand" />, title: "Best Deals", desc: "Exclusive offers and cashbacks daily" },
-    { icon: <Gift size={24} className="text-violet-600" />, title: "Rewards", desc: "Earn Vingo points with every order" },
+    { icon: <Gift size={24} className="text-violet-600" />, title: "Rewards", desc: "Earn DishDash points with every order" },
   ];
 
   const trendingDishes = [
@@ -115,8 +115,8 @@ const LandingPage = () => {
       <nav className="fixed top-0 left-0 right-0 z-[100] h-20 flex items-center px-6 lg:px-12 bg-bg-card/90 backdrop-blur-md border-b border-border/50 shadow-sm">
         <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
           <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate("/")}>
-            <div className="w-9 h-9 bg-brand rounded-xl flex items-center justify-center text-white font-black text-lg shadow-md shadow-brand/30">V</div>
-            <span className="text-2xl font-black tracking-tighter text-text-primary">Vingo<span className="text-brand">.</span></span>
+            <div className="w-9 h-9 bg-brand rounded-xl flex items-center justify-center text-white font-black text-lg shadow-md shadow-brand/30">D</div>
+            <span className="text-2xl font-black tracking-tighter text-text-primary">DishDash<span className="text-brand">.</span></span>
           </div>
           <div className="flex items-center gap-3">
             <button onClick={() => navigate("/signin")} className="hidden sm:flex h-11 px-6 items-center text-[14px] font-semibold text-text-secondary hover:text-brand transition-colors">
@@ -134,28 +134,28 @@ const LandingPage = () => {
         <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[#FEF3F3] to-transparent pointer-events-none" />
         <div className="absolute -top-40 right-0 w-[600px] h-[600px] bg-brand/5 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-16 xl:gap-24 items-center py-20">
+        <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-10 xl:gap-24 items-center py-10 md:py-20">
           <div className="relative z-10">
-            <div className="hero-badge inline-flex items-center gap-2 bg-brand/10 border border-brand/20 rounded-full px-4 py-2 mb-8">
+            <div className="hero-badge inline-flex items-center gap-2 bg-brand/10 border border-brand/20 rounded-full px-4 py-2 mb-6 sm:mb-8">
               <div className="w-2 h-2 bg-brand rounded-full animate-pulse" />
-              <span className="text-[12px] font-bold text-brand uppercase tracking-widest">Now in 12 cities across India</span>
+              <span className="text-[10px] sm:text-[12px] font-bold text-brand uppercase tracking-widest">Now in 12 cities across India</span>
             </div>
 
-            <h1 className="hero-title text-5xl sm:text-6xl xl:text-7xl font-black tracking-tight leading-[1.05] mb-6">
+            <h1 className="hero-title text-4xl sm:text-6xl xl:text-7xl font-black tracking-tight leading-[1.05] mb-6">
               Delicious food,<br />
               <span className="text-brand">delivered fast.</span>
             </h1>
 
-            <p className="hero-subtitle text-text-secondary text-lg md:text-xl font-medium max-w-lg mb-10 leading-relaxed">
+            <p className="hero-subtitle text-text-secondary text-[15px] sm:text-lg md:text-xl font-medium max-w-lg mb-8 sm:mb-10 leading-relaxed">
               Order from your favourite local restaurants. Track in real-time. Enjoy at home.
             </p>
 
             <div className="hero-actions flex flex-col sm:flex-row gap-4 max-w-xl">
               <div className="flex flex-1 items-center gap-3 bg-bg-card border-2 border-border rounded-2xl px-4 h-14 shadow-sm focus-within:border-brand transition-all">
                 <MapPin size={18} className="text-brand shrink-0" />
-                <input type="text" placeholder="Enter your delivery location..." className="flex-1 outline-none text-[15px] font-medium text-text-primary placeholder:text-text-muted bg-transparent" />
+                <input type="text" placeholder="Enter your delivery location..." className="flex-1 outline-none text-[14px] sm:text-[15px] font-medium text-text-primary placeholder:text-text-muted bg-transparent" />
               </div>
-              <button onClick={() => navigate("/signup")} className="primary-button h-14 px-8 text-[15px] rounded-2xl font-bold shrink-0 whitespace-nowrap shadow-lg shadow-brand/25">
+              <button onClick={() => navigate("/signup")} className="primary-button h-14 px-8 text-[14px] sm:text-[15px] rounded-2xl font-bold shrink-0 whitespace-nowrap shadow-lg shadow-brand/25">
                 Find Food <ArrowRight size={18} />
               </button>
             </div>
@@ -209,7 +209,7 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* ── WHY VINGO ── */}
+      {/* ── WHY DISHDASH ── */}
       <section className="py-24 px-6 lg:px-12">
         <div className="max-w-7xl mx-auto">
           <div className="reveal-section text-center mb-16">
@@ -250,7 +250,7 @@ const LandingPage = () => {
             </button>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-5">
             {trendingDishes.map((dish, i) => (
               <div
                 key={i}
@@ -332,7 +332,7 @@ const LandingPage = () => {
             <div className="relative z-10">
               <h2 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight mb-6">Hungry? Let's fix that.</h2>
               <p className="text-white/80 text-lg font-medium max-w-xl mx-auto mb-12 leading-relaxed">
-                Join over 50,000 foodies across India who order smarter with Vingo.
+                Join over 50,000 foodies across India who order smarter with DishDash.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <button onClick={() => navigate("/signup")} className="h-14 px-10 bg-white text-brand font-black text-[15px] rounded-2xl hover:bg-bg-secondary transition-all shadow-lg active:scale-95">
@@ -351,15 +351,15 @@ const LandingPage = () => {
       <footer className="py-16 px-6 lg:px-12 border-t border-border bg-bg-secondary">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-brand rounded-xl flex items-center justify-center text-white font-black text-lg">V</div>
-            <span className="text-2xl font-black tracking-tighter text-text-primary">Vingo<span className="text-brand">.</span></span>
+            <div className="w-10 h-10 bg-brand rounded-xl flex items-center justify-center text-white font-black text-lg">D</div>
+            <span className="text-2xl font-black tracking-tighter text-text-primary">DishDash<span className="text-brand">.</span></span>
           </div>
           <div className="flex flex-wrap justify-center gap-8">
             {["Instagram", "Twitter", "LinkedIn", "Support"].map((l) => (
               <button key={l} className="text-[13px] font-bold text-text-muted hover:text-brand transition-colors">{l}</button>
             ))}
           </div>
-          <p className="text-text-muted text-[12px] font-semibold">© 2026 Vingo. All Rights Reserved.</p>
+          <p className="text-text-muted text-[12px] font-semibold">© 2026 DishDash. All Rights Reserved.</p>
         </div>
       </footer>
     </div>

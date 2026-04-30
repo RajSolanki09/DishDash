@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { serverUrl } from '../App';
 import Nav from '../components/Nav';
@@ -16,6 +16,8 @@ import {
 import DeliveryBoyTraking from '../components/DeliveryBoyTraking';
 import { setUserData } from '../redux/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import toast from 'react-hot-toast';
+import gsap from 'gsap';
 
 const DeliveryDashboard = () => {
   const { userData } = useSelector(state => state.user);
@@ -24,6 +26,20 @@ const DeliveryDashboard = () => {
   const [todayStats, setTodayStats] = useState(null);
   const [allTimeStats, setAllTimeStats] = useState(null);
   const [isToggling, setIsToggling] = useState(false);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    if (!loading) {
+      let ctx = gsap.context(() => {
+        const tl = gsap.timeline({ defaults: { ease: "power4.out" } });
+        tl.fromTo(".header-anim", { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 1, stagger: 0.1 })
+          .fromTo(".stat-card-anim", { opacity: 0, y: 30, scale: 0.95 }, { opacity: 1, y: 0, scale: 1, duration: 0.8, stagger: 0.12 }, "-=0.6")
+          .fromTo(".chart-card-anim", { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.8 }, "-=0.4")
+          .fromTo(".history-card-anim", { opacity: 0, x: 30 }, { opacity: 1, x: 0, duration: 0.8 }, "-=0.8");
+      }, containerRef);
+      return () => ctx.revert();
+    }
+  }, [loading]);
 
   const fetchTodayDeliveries = async () => {
     try {
@@ -70,12 +86,12 @@ const DeliveryDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-bg-primary relative overflow-x-hidden pb-20">
+    <div className="min-h-screen bg-bg-primary relative overflow-x-hidden pb-20" ref={containerRef}>
       <Nav />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-20 relative z-10">
         {/* Page Header */}
-        <div className="mb-10 text-center md:text-left">
+        <div className="mb-10 text-center md:text-left header-anim">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 premium-card rounded-full mb-4 mx-auto md:mx-0">
             <Bike size={12} className="text-brand" />
             <span className="text-caption text-text-secondary">
@@ -104,9 +120,11 @@ const DeliveryDashboard = () => {
                     const res = await axios.post(`${serverUrl}/api/user/toggle-duty`, {}, { withCredentials: true });
                     if (res.data.success) {
                       dispatch(setUserData({ ...userData, isDutyOn: res.data.isDutyOn }));
+                      toast.success(`Duty is now ${res.data.isDutyOn ? 'ON' : 'OFF'}`);
                     }
                   } catch (e) {
                     console.error(e);
+                    toast.error("Failed to update status");
                   } finally {
                     setIsToggling(false);
                   }
@@ -122,7 +140,7 @@ const DeliveryDashboard = () => {
         {/* Today's Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
           {/* Today's Earnings */}
-          <div className="premium-card p-8 relative overflow-hidden group">
+          <div className="premium-card p-8 relative overflow-hidden group stat-card-anim">
             <div className="absolute inset-0 bg-gradient-to-br from-brand/5 to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
             <div className="flex items-center justify-between mb-6 relative z-10">
               <div className="w-14 h-14 bg-brand/10 border border-brand/20 rounded-2xl flex items-center justify-center text-brand">
@@ -143,7 +161,7 @@ const DeliveryDashboard = () => {
           </div>
 
           {/* Today's Deliveries */}
-          <div className="premium-card p-8 relative overflow-hidden group">
+          <div className="premium-card p-8 relative overflow-hidden group stat-card-anim">
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
             <div className="flex items-center justify-between mb-6 relative z-10">
               <div className="w-14 h-14 bg-blue-500/10 border border-blue-500/20 rounded-2xl flex items-center justify-center text-blue-500">
@@ -164,7 +182,7 @@ const DeliveryDashboard = () => {
           </div>
 
           {/* All-Time Earnings */}
-          <div className="premium-card p-8 relative overflow-hidden group">
+          <div className="premium-card p-8 relative overflow-hidden group stat-card-anim">
             <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-500/5 to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
             <div className="flex items-center justify-between mb-6 relative z-10">
               <div className="w-14 h-14 bg-fuchsia-500/10 border border-fuchsia-500/20 rounded-2xl flex items-center justify-center text-fuchsia-500">
@@ -187,7 +205,7 @@ const DeliveryDashboard = () => {
 
         {/* Hourly Stats */}
         {todayStats?.hourlyStats && todayStats.hourlyStats.length > 0 && (
-          <div className="premium-card overflow-hidden mb-12">
+          <div className="premium-card overflow-hidden mb-12 chart-card-anim">
             <div className="px-8 py-6 border-b border-border bg-bg-secondary flex items-center gap-4">
               <div className="w-10 h-10 bg-brand/10 border border-brand/20 rounded-xl flex items-center justify-center">
                 <BarChart3 size={20} className="text-brand" />
@@ -215,7 +233,7 @@ const DeliveryDashboard = () => {
 
         {/* Delivery History */}
         {allTimeStats?.dailyHistory && allTimeStats.dailyHistory.length > 0 && (
-          <div className="premium-card overflow-hidden">
+          <div className="premium-card overflow-hidden history-card-anim">
             <div className="px-8 py-6 border-b border-border bg-bg-secondary flex items-center gap-4">
               <div className="w-10 h-10 bg-brand/10 border border-brand/20 rounded-xl flex items-center justify-center">
                 <Calendar size={20} className="text-brand" />

@@ -1,9 +1,9 @@
-# VINGO — Online Food Delivery System
+# dishdash — Online Food Delivery System
 ## Black Book / Project Documentation
 
 ---
 
-**Project Title:** Vingo — Online Food Delivery System  
+**Project Title:** dishdash — Online Food Delivery System  
 **Technology Stack:** MERN (MongoDB, Express.js, React.js, Node.js)  
 **Academic Year:** 2025–2026  
 **Document Type:** Project Black Book  
@@ -36,7 +36,7 @@
 
 The food delivery industry has undergone a massive transformation in the last decade. With the rise of internet connectivity and smartphones, customers now expect food to be available at their doorsteps within minutes. Traditional food ordering systems — such as phone calls or walk-in visits — are inefficient, error-prone, and lack real-time visibility. The modern customer demands a seamless digital experience: browsing menus, placing orders, making payments, and tracking deliveries — all from a single application.
 
-**Vingo** is an online food delivery platform developed to address these exact needs. It is a full-stack web application built on the MERN stack (MongoDB, Express.js, React.js, Node.js) that connects three key stakeholders: **Customers**, **Restaurant/Shop Owners**, and **Delivery Boys** — all within one cohesive system supported by real-time communication via WebSockets.
+**dishdash** is an online food delivery platform developed to address these exact needs. It is a full-stack web application built on the MERN stack (MongoDB, Express.js, React.js, Node.js) that connects three key stakeholders: **Customers**, **Restaurant/Shop Owners**, and **Delivery Boys** — all within one cohesive system supported by real-time communication via WebSockets.
 
 ## 1.2 Problem Statement
 
@@ -47,11 +47,11 @@ Existing small-scale food businesses in local areas lack a robust digital presen
 - **Revenue loss** due to unmanaged orders and no payment gateway integration
 - **Poor customer retention** due to bad user experience
 
-Vingo solves all of these problems by providing a complete, production-ready food delivery ecosystem.
+dishdash solves all of these problems by providing a complete, production-ready food delivery ecosystem.
 
 ## 1.3 Scope of the Project
 
-The scope of Vingo covers:
+The scope of dishdash covers:
 
 - **User Registration & Authentication** — Sign Up, Sign In, Google OAuth, OTP-based Password Reset
 - **Multi-Role System** — Customer, Shop Owner, and Delivery Boy roles with separate workflows
@@ -68,7 +68,7 @@ The scope of Vingo covers:
 
 ## 2.1 Aim of the Project
 
-The primary aim of the **Vingo** project is to develop a comprehensive, scalable, and user-friendly online food delivery web application that:
+The primary aim of the **dishdash** project is to develop a comprehensive, scalable, and user-friendly online food delivery web application that:
 
 > _"Digitizes the entire food ordering and delivery process from restaurant discovery to doorstep delivery, ensuring real-time communication, secure payments, and a premium user experience for all stakeholders involved."_
 
@@ -86,7 +86,7 @@ The specific objectives of this project are:
 
 ## 2.3 Project Overview
 
-Vingo is a **three-sided marketplace** platform:
+dishdash is a **three-sided marketplace** platform:
 
 | Role | Capabilities |
 |---|---|
@@ -114,7 +114,7 @@ Vingo is a **three-sided marketplace** platform:
 
 ## 3.1 Development Environment
 
-The Vingo project was developed using the following development environment:
+The dishdash project was developed using the following development environment:
 
 ### 3.1.1 Operating System & Hardware
 - **Operating System:** Windows 11
@@ -183,7 +183,7 @@ The Vingo project was developed using the following development environment:
 
 # CHAPTER 4 — MODELS (DATABASE SCHEMA DESIGN)
 
-The Vingo backend uses **MongoDB** as its database and **Mongoose** as the ODM library. The application has **6 data models** that represent the core entities of the system.
+The dishdash backend uses **MongoDB** as its database and **Mongoose** as the ODM library. The application has **6 data models** that represent the core entities of the system.
 
 ## 4.1 User Model (`user.model.js`)
 
@@ -438,7 +438,7 @@ The Level 0 DFD (Context Diagram) shows the entire system as a single process in
 ```
                     +----------------------+
     CUSTOMER -----> |                      | <----- SHOP OWNER
-                    |    VINGO SYSTEM      |
+                    |    dishdash SYSTEM      |
     CUSTOMER <----- |   (Food Delivery)    | -----> SHOP OWNER
                     |                      |
   DELIVERY BOY ---> |                      | <----- DELIVERY BOY
@@ -588,7 +588,7 @@ DELIVERY BOY
 
 ## 7.1 Project Planning Approach
 
-The Vingo project was developed following an iterative and incremental development model, similar to **Agile methodology**. The project was broken into sprints where each sprint delivered a working piece of the application.
+The dishdash project was developed following an iterative and incremental development model, similar to **Agile methodology**. The project was broken into sprints where each sprint delivered a working piece of the application.
 
 ## 7.2 Work Breakdown Structure (WBS)
 
@@ -679,7 +679,7 @@ _(Note: In a student project, all roles may be handled by a single developer or 
 
 ## 8.1 Architecture Overview
 
-Vingo follows a **3-Tier Client-Server Architecture** with an additional real-time layer:
+dishdash follows a **3-Tier Client-Server Architecture** with an additional real-time layer:
 
 ```
 ┌──────────────────────────────────────────────┐
@@ -824,7 +824,7 @@ CUSTOMER pays via UPI / Card / Net Banking
 
 ## 9.1 Testing Approach
 
-The Vingo project followed a **multi-layered testing strategy** to ensure correctness, reliability, and performance of both the frontend and backend systems. Testing was done across multiple phases of development.
+The dishdash project followed a **multi-layered testing strategy** to ensure correctness, reliability, and performance of both the frontend and backend systems. Testing was done across multiple phases of development.
 
 ## 9.2 Unit Testing
 
@@ -1000,7 +1000,7 @@ Integration testing verified that the frontend and backend work together correct
 
 ## 12.1 Summary of Work Done
 
-The **Vingo Online Food Delivery System** is a fully functional, production-quality MERN stack web application that successfully achieves all the objectives defined at the beginning of the project. The system covers the complete food delivery lifecycle:
+The **dishdash Online Food Delivery System** is a fully functional, production-quality MERN stack web application that successfully achieves all the objectives defined at the beginning of the project. The system covers the complete food delivery lifecycle:
 
 - A **robust authentication system** supporting email/password, Google OAuth, and OTP-based password recovery
 - A **three-sided marketplace** connecting Customers, Shop Owners, and Delivery Boys in a seamless workflow
@@ -1012,7 +1012,7 @@ The **Vingo Online Food Delivery System** is a fully functional, production-qual
 
 ## 12.2 Learning Outcomes
 
-Through the development of Vingo, the following key technical skills were gained and demonstrated:
+Through the development of dishdash, the following key technical skills were gained and demonstrated:
 
 1. **Full-Stack Development:** Building a complete application spanning from UI to database with the MERN stack
 2. **Real-Time Systems:** Implementing WebSocket-based bidirectional event communication with Socket.IO
@@ -1024,9 +1024,9 @@ Through the development of Vingo, the following key technical skills were gained
 
 ## 12.3 Conclusion
 
-Vingo demonstrates that a single, well-architected MERN stack application can power a complex, real-world marketplace platform. The project not only fulfills the academic requirements of a final-year project, but also represents a commercially viable prototype that can be extended and deployed as a real product.
+dishdash demonstrates that a single, well-architected MERN stack application can power a complex, real-world marketplace platform. The project not only fulfills the academic requirements of a final-year project, but also represents a commercially viable prototype that can be extended and deployed as a real product.
 
-The system's architecture — with clean separation between authentication, business logic, real-time, and payment layers — makes it highly maintainable and extensible. With the recommended future enhancements (mobile app, microservices, AI recommendations), Vingo has the potential to evolve into a full-scale food delivery platform competitive with industry solutions.
+The system's architecture — with clean separation between authentication, business logic, real-time, and payment layers — makes it highly maintainable and extensible. With the recommended future enhancements (mobile app, microservices, AI recommendations), dishdash has the potential to evolve into a full-scale food delivery platform competitive with industry solutions.
 
 ---
 
@@ -1117,7 +1117,7 @@ The system's architecture — with clean separation between authentication, busi
 ---
 
 **Document Prepared For:** Final Year MERN Stack Project  
-**Project Name:** Vingo — Online Food Delivery System  
+**Project Name:** dishdash — Online Food Delivery System  
 **Date:** April 2026
 
 ---

@@ -159,6 +159,12 @@ export const toggleShopStatus = async (req, res) => {
       { path: 'items', options: { sort: { updatedAt: -1 } } }
     ]);
 
+    // 🔥 Emit socket event for live update
+    const io = req.app.get("io");
+    if (io) {
+      io.emit("shopStatusChanged", { shopId: shop._id, isOpen: shop.isOpen });
+    }
+
     res.status(200).json({ success: true, isOpen: shop.isOpen, shop });
   } catch (error) {
     res.status(500).json({ message: "Failed to toggle shop status" });

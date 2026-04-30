@@ -88,8 +88,8 @@ const UserDashboard = () => {
 
         {/* ── HERO / GREETING ── */}
         {!isSearchActive && (
-          <header className="pt-10 hero-anim">
-            <div className="relative rounded-3xl bg-gradient-to-br from-brand to-[#C12A35] p-8 md:p-12 overflow-hidden text-white shadow-xl shadow-brand/20">
+          <header className="pt-6 md:pt-10 hero-anim">
+            <div className="relative rounded-3xl bg-gradient-to-br from-brand to-[#C12A35] p-6 sm:p-8 md:p-12 overflow-hidden text-white shadow-xl shadow-brand/20">
               {/* Dotted pattern */}
               <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(circle, white 1px, transparent 1px)", backgroundSize: "20px 20px" }} />
               {/* Background image subtle */}
@@ -102,11 +102,11 @@ const UserDashboard = () => {
                   <MapPin size={12} className="text-white" />
                   <span className="text-[12px] font-bold text-white uppercase tracking-widest">{city || "Your City"}</span>
                 </div>
-                <h1 className="text-3xl sm:text-4xl md:text-5xl font-black leading-tight tracking-tight mb-3">
+                <h1 className="text-2xl sm:text-3xl md:text-5xl font-black leading-tight tracking-tight mb-3">
                   What are we craving,<br />
                   <span className="text-white/90">{userData?.fullname?.split(" ")[0]}? <Smile size={28} className="inline ml-1" /></span>
                 </h1>
-                <p className="text-white/75 font-medium text-lg">
+                <p className="text-white/75 font-medium text-[15px] sm:text-lg">
                   {shopsInMyCity?.length || 0} restaurants ready to deliver near you.
                 </p>
               </div>
@@ -264,15 +264,15 @@ const UserDashboard = () => {
       <footer className="mt-24 pt-12 pb-8 border-t border-border bg-bg-card">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-brand rounded-xl flex items-center justify-center font-black text-white text-lg">V</div>
-            <span className="text-xl font-black tracking-tighter text-text-primary">Vingo<span className="text-brand">.</span></span>
+            <div className="w-9 h-9 bg-brand rounded-xl flex items-center justify-center font-black text-white text-lg">D</div>
+            <span className="text-xl font-black tracking-tighter text-text-primary">DishDash<span className="text-brand">.</span></span>
           </div>
           <div className="flex gap-8">
             {["About", "Privacy", "Terms", "Support"].map((l) => (
               <button key={l} className="text-[13px] font-bold text-text-muted hover:text-brand transition-colors">{l}</button>
             ))}
           </div>
-          <p className="text-text-muted text-[12px] font-semibold">© 2026 Vingo. All rights reserved.</p>
+          <p className="text-text-muted text-[12px] font-semibold">© 2026 DishDash. All rights reserved.</p>
         </div>
       </footer>
     </div>

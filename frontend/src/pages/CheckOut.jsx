@@ -242,7 +242,7 @@ const CheckOut = () => {
       }
     } catch (error) {
       console.error(error);
-      alert("Order failed");
+      alert(error.response?.data?.message || "Order failed. Please try again.");
     } finally {
       setPlacing(false);
     }
@@ -253,7 +253,7 @@ const CheckOut = () => {
       key: import.meta.env.VITE_RAZORPAY_ID,
       amount: razorOrder.amount,
       currency: "INR",
-      name: "Vingo",
+      name: "DishDash",
       description: "Food Delivery Website",
       order_id: razorOrder.id,
       handler: async function (response) {
@@ -314,7 +314,7 @@ const CheckOut = () => {
 
         <div className="grid lg:grid-cols-12 gap-8 lg:gap-10 items-start">
           {/* LEFT COLUMN – Address & Payment */}
-          <div className="lg:col-span-8 space-y-8">
+          <div className="lg:col-span-8 space-y-8 order-2 lg:order-1">
             {/* 🗺️ Delivery Address Card */}
             <div className="address-card-anim bg-bg-card border border-border rounded-[2.5rem] shadow-sm overflow-hidden relative">
               <div className="p-6 sm:p-8 border-b border-border flex flex-wrap items-center justify-between gap-4 bg-bg-secondary/30">
@@ -346,27 +346,27 @@ const CheckOut = () => {
                 </button>
               </div>
 
-              <div className="p-6 sm:p-8 space-y-6">
+              <div className="p-4 sm:p-8 space-y-6">
                 {/* Search Input */}
                 <div className="relative group">
                   <input
                     type="text"
-                    className="w-full bg-bg-secondary border border-border focus:border-brand focus:bg-bg-card pl-14 pr-12 py-4 rounded-2xl text-sm font-bold transition-all outline-none placeholder:text-text-muted text-text-primary shadow-inner focus:shadow-md"
+                    className="w-full bg-bg-secondary border border-border focus:border-brand focus:bg-bg-card pl-12 sm:pl-14 pr-10 sm:pr-12 py-3 sm:py-4 rounded-xl sm:rounded-2xl text-[13px] sm:text-sm font-bold transition-all outline-none placeholder:text-text-muted text-text-primary shadow-inner focus:shadow-md"
                     placeholder="Search building, street, or area..."
                     value={searchAddress}
                     onChange={(e) => setSearchAddress(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && handleSearchAddress()}
                   />
-                  <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-text-muted group-focus-within:text-brand transition-colors" size={18} />
+                  <Search className="absolute left-4 sm:left-5 top-1/2 -translate-y-1/2 text-text-muted group-focus-within:text-brand transition-colors" size={16} />
                   {searching && (
-                    <div className="absolute right-5 top-1/2 -translate-y-1/2">
-                      <ClipLoader size={16} color="#ff4d2d" />
+                    <div className="absolute right-4 sm:right-5 top-1/2 -translate-y-1/2">
+                      <ClipLoader size={14} color="#ff4d2d" />
                     </div>
                   )}
                 </div>
 
                 {/* Map */}
-                <div className="h-[350px] md:h-[400px] rounded-2xl overflow-hidden border border-border shadow-md relative group">
+                <div className="h-[280px] sm:h-[350px] md:h-[400px] rounded-2xl overflow-hidden border border-border shadow-md relative group">
                   <MapContainer
                     center={mapCenter}
                     zoom={15}
@@ -496,10 +496,10 @@ const CheckOut = () => {
             </div>
           </div>
 
-          {/* RIGHT COLUMN – Order Summary (Sticky) */}
-          <div className="lg:col-span-4 sticky top-28 summary-card-anim">
+          {/* RIGHT COLUMN – Order Summary (Sticky on lg) */}
+          <div className="lg:col-span-4 lg:sticky lg:top-28 summary-card-anim order-1 lg:order-2">
             <div className="bg-bg-card border border-border rounded-[2.5rem] p-6 sm:p-8 shadow-lg">
-              <h2 className="text-[16px] font-black text-text-primary uppercase tracking-widest mb-8 flex items-center gap-3">
+              <h2 className="text-[14px] sm:text-[16px] font-black text-text-primary uppercase tracking-widest mb-6 sm:mb-8 flex items-center gap-3">
                 <div className="w-1.5 h-6 bg-brand rounded-full" />
                 Final Summary
               </h2>

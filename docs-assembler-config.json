@@ -3,9 +3,9 @@
     "contact": "",
     "gitConfig": {
         "owner": "RajSolanki09",
-        "repo": "Vingo",
+        "repo": "dishdash",
         "branch": "master",
-        "publishUrl": "https://RajSolanki09.github.io/Vingo/"
+        "publishUrl": "https://RajSolanki09.github.io/dishdash/"
     },
     "repoConfig": {
         "assetFolderName": "δ steps",
@@ -15,6 +15,6 @@
         "mapsFolderName": "tsmaps"
     },
     "devConfig": {
-        "forceJsDelivr": true
+        "forceJsDelivr": false
     }
 }

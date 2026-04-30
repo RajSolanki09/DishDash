@@ -1,4 +1,4 @@
-# VINGO - Food Delivery Platform
+# dishdash - Food Delivery Platform
 
 ## Project Documentation
 
@@ -25,7 +25,7 @@
 
 ## 1. Introduction
 
-**Vingo** is a full-stack food delivery web application built using the MERN (MongoDB, Express.js, React.js, Node.js) stack. The platform enables customers to browse restaurants, order food, and track deliveries in real-time. It supports three distinct user roles: **Customers**, **Restaurant Owners**, and **Delivery Partners**.
+**dishdash** is a full-stack food delivery web application built using the MERN (MongoDB, Express.js, React.js, Node.js) stack. The platform enables customers to browse restaurants, order food, and track deliveries in real-time. It supports three distinct user roles: **Customers**, **Restaurant Owners**, and **Delivery Partners**.
 
 The application replicates the core functionality of popular food delivery services like Swiggy and Zomato, providing a seamless experience from browsing to doorstep delivery.
 
@@ -35,7 +35,7 @@ The application replicates the core functionality of popular food delivery servi
 
 | Detail | Description |
 |---|---|
-| **Project Name** | Vingo |
+| **Project Name** | dishdash |
 | **Project Type** | Full-Stack Web Application |
 | **Architecture** | MERN Stack (MongoDB, Express, React, Node.js) |
 | **Database** | MongoDB with Mongoose ODM |
@@ -43,7 +43,7 @@ The application replicates the core functionality of popular food delivery servi
 | **Real-Time** | Socket.IO WebSocket |
 | **Payment** | Razorpay Gateway |
 | **Maps** | Leaflet.js with OpenStreetMap |
-| **Firebase Project** | vingo-food-delivery-9c1e1 |
+| **Firebase Project** | dishdash-food-delivery-9c1e1 |
 
 ---
 
@@ -743,7 +743,7 @@ Redux Store
 ## 15. Project Folder Structure
 
 ```
-Vingo MERN-Project/
+dishdash MERN-Project/
 ├── backend/
 │   ├── controllers/
 │   │   ├── auth.controller.js
@@ -845,10 +845,11 @@ Vingo MERN-Project/
 
 ## Conclusion
 
-Vingo is a comprehensive food delivery platform that demonstrates the power of the MERN stack in building real-time, feature-rich web applications. The project showcases modern web development practices including role-based access control, real-time WebSocket communication, geospatial database queries, third-party API integrations, and responsive UI design.
+dishdash is a comprehensive food delivery platform that demonstrates the power of the MERN stack in building real-time, feature-rich web applications. The project showcases modern web development practices including role-based access control, real-time WebSocket communication, geospatial database queries, third-party API integrations, and responsive UI design.
 
 The three-role system (Customer, Owner, Delivery Partner) provides a complete end-to-end food ordering and delivery experience, making it a practical demonstration of full-stack development skills.
 
 ---
 
 *Document prepared for academic submission.*
+

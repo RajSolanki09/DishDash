@@ -144,7 +144,7 @@ export const getItemsByCity = async (req, res) => {
     const items = await Item.find({
       shop: { $in: shopIds },
     })
-    .populate("shop", "name rating") 
+    .populate("shop", "name rating isOpen") 
     .select("name image shop category price foodType rating");
 
     res.status(200).json(items);
@@ -182,7 +182,7 @@ export const searchItems  = async (req, res) => {
         { category: { $regex: new RegExp(query, 'i') } }
       ]
     })
-    .populate("shop", "name image rating") // Shop details populate karo
+    .populate("shop", "name image rating isOpen") // Shop details populate karo
     .select("name image shop category price foodType rating");
 
     return res.status(200).json(items);

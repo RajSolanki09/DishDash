@@ -37,6 +37,13 @@ export const placeOrder = async (req, res) => {
         if (!shopDetails) {
           return res.status(404).json({ message: `Shop not found for item: ${item.name}` });
         }
+        // 🔥 FIX: Prevent ordering from closed shops
+        if (!shopDetails.isOpen) {
+          return res.status(400).json({ 
+            success: false, 
+            message: `Shop "${shopDetails.name}" is currently closed and not accepting orders.` 
+          });
+        }
         shopOrdersMap.set(shopId, {
           shop: shopId,
           owner: shopDetails.owner,

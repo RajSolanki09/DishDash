@@ -478,13 +478,13 @@ const DeliveryBoy = () => {
       <footer className="bg-bg-secondary border-t border-border py-12 px-4 mt-10">
         <div className="max-w-6xl mx-auto text-center space-y-4">
           <h3 className="text-3xl font-black text-gradient">
-            Vingo<span className="text-text-primary">.</span>
+            DishDash<span className="text-text-primary">.</span>
           </h3>
           <p className="text-[13px] font-medium text-text-secondary tracking-wide">
             Made with <Heart size={14} className="inline text-brand fill-brand" /> for premium delivery partners
           </p>
           <p className="text-caption text-text-muted pt-4">
-            © 2026 Vingo. All rights reserved.
+            © 2026 DishDash. All rights reserved.
           </p>
         </div>
       </footer>

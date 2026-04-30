@@ -39,7 +39,7 @@ const OrderPlaced = () => {
           height={windowSize.height}
           recycle={false}
           numberOfPieces={400}
-          colors={["#ff4d2d", "#ff8c7a", "#ffffff", "#333333"]} // Vingo Dark Theme Colors
+          colors={["#ff4d2d", "#ff8c7a", "#ffffff", "#333333"]} // DishDash Dark Theme Colors
         />
       )}
 
@@ -114,7 +114,7 @@ const OrderPlaced = () => {
         </div>
 
         <p className="mt-14 text-[9px] font-black text-text-muted uppercase tracking-[0.4em] text-center">
-          Thank you for choosing Vingo
+          Thank you for choosing DishDash
         </p>
       </div>
 

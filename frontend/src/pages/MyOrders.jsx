@@ -204,7 +204,7 @@ function MyOrders() {
         {!loading && myOrders?.length > 0 && (
           <div className="mt-16 text-center">
             <p className="text-[10px] font-bold text-text-muted uppercase tracking-[0.3em]">
-              Vingo • Order Management System
+              DishDash • Order Management System
             </p>
           </div>
         )}

@@ -165,17 +165,17 @@ const SignUp = () => {
             onClick={() => navigate("/")}
           >
             <div className="w-10 h-10 bg-brand rounded-xl flex items-center justify-center shadow-lg shadow-brand/30">
-              <span className="text-white text-xl font-black">V</span>
+              <span className="text-white text-xl font-black">D</span>
             </div>
             <span className="text-white text-2xl font-black tracking-tight">
-              Vingo<span className="text-brand">.</span>
+              DishDash<span className="text-brand">.</span>
             </span>
           </div>
 
           <div className="space-y-6">
             <h2 className="text-4xl xl:text-5xl font-black text-white tracking-tight leading-tight">
               Join the<br />
-              <span className="text-brand">Vingo family.</span>
+              <span className="text-brand">DishDash family.</span>
             </h2>
             <p className="text-white/60 text-[15px] font-medium max-w-sm leading-relaxed">
               Whether you're a foodie, a restaurant owner, or a delivery partner — there's a place for you here.
@@ -190,7 +190,7 @@ const SignUp = () => {
           </div>
 
           <p className="text-white/30 text-[11px] font-bold uppercase tracking-widest">
-            © 2026 Vingo. All rights reserved.
+            © 2026 DishDash. All rights reserved.
           </p>
         </div>
       </div>
@@ -203,10 +203,10 @@ const SignUp = () => {
           {/* Mobile Logo */}
           <div className="lg:hidden text-center mb-8 cursor-pointer" onClick={() => navigate("/")}>
             <div className="inline-flex items-center justify-center w-14 h-14 bg-brand rounded-2xl mb-4 shadow-lg shadow-brand/30 hover:scale-105 transition-transform">
-              <span className="text-white text-3xl font-black">V</span>
+              <span className="text-white text-3xl font-black">D</span>
             </div>
             <h1 className="text-3xl font-black tracking-tight text-text-primary">Create Account</h1>
-            <p className="text-text-muted text-sm mt-1.5 font-medium">Join Vingo and start ordering</p>
+            <p className="text-text-muted text-sm mt-1.5 font-medium">Join DishDash and start ordering</p>
           </div>
 
           {/* Desktop heading */}

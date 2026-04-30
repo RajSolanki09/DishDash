@@ -382,7 +382,7 @@ const Nav = () => {
         role="navigation"
         aria-label="Main navigation"
       >
-        <div className="max-w-[1440px] mx-auto h-full flex items-center justify-between px-3 sm:px-5 lg:px-8 gap-2 sm:gap-4">
+        <div className="max-w-[1440px] mx-auto h-full flex items-center justify-between px-4 sm:px-6 lg:px-8 gap-3 sm:gap-4">
 
           {/* ── LEFT: Logo + Desktop Search ── */}
           <div className="flex items-center gap-3 lg:gap-6 flex-1 min-w-0">
@@ -393,10 +393,10 @@ const Nav = () => {
               className="text-[26px] sm:text-[30px] md:text-[34px] font-black cursor-pointer select-none shrink-0"
               role="button"
               tabIndex={0}
-              aria-label="Vingo - Go to home page"
+              aria-label="DishDash - Go to home page"
               onKeyDown={(e) => e.key === "Enter" && navigate("/")}
             >
-              <span style={{ color: "var(--color-text-primary, #111)" }}>Vingo</span>
+              <span style={{ color: "var(--color-text-primary, #111)" }}>DishDash</span>
               <span style={{ color: "var(--color-brand, #f97316)" }}>.</span>
             </h1>
 
@@ -727,7 +727,7 @@ const Nav = () => {
                   onClick={() => navigate("/about")}
                   className="hidden md:flex items-center justify-center gap-1.5 h-[40px] px-3 xl:px-4 rounded-xl font-semibold text-[13px] transition-all"
                   style={{ color: "var(--color-text-secondary,#666)" }}
-                  aria-label="About Vingo"
+                  aria-label="About DishDash"
                   onMouseEnter={(e) => { e.currentTarget.style.background = "var(--color-bg-secondary,#f5f5f5)"; e.currentTarget.style.color = "var(--color-brand,#f97316)"; }}
                   onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "var(--color-text-secondary,#666)"; }}
                 >

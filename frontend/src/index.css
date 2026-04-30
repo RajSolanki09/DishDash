@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ═══════════════════════════════════════════════════════════════
-   VINGO PREMIUM THEME SYSTEM — Award-Winning Design
+   DISHDASH PREMIUM THEME SYSTEM — Award-Winning Design
    Light & Dark Mode with Smooth Transitions
    ═══════════════════════════════════════════════════════════════ */
 
@@ -299,6 +299,19 @@
 .gradient-animate {
   background-size: 200% 200%;
   animation: gradient-shift 3s ease infinite;
+}
+
+@keyframes pulse-subtle {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.02); opacity: 0.9; }
+}
+.animate-pulse-subtle {
+  animation: pulse-subtle 2s ease-in-out infinite;
+}
+
+@keyframes navProgressBar {
+  from { width: 100%; }
+  to { width: 0%; }
 }
 
 /* ═══════════════════════════════════════════════════════════════

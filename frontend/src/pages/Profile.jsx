@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Nav from "../components/Nav";
@@ -13,9 +13,14 @@ import {
   MapPin,
   Shield,
   Clock,
-  Fingerprint
+  Fingerprint,
+  Star,
+  MessageSquare,
+  Power,
+  Zap
 } from "lucide-react";
 import { ClipLoader } from "react-spinners";
+import toast from "react-hot-toast";
 import axios from "axios";
 import { serverUrl } from "../App";
 import { setUserData } from "../redux/userSlice";
@@ -35,6 +40,7 @@ const Profile = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [isTogglingDuty, setIsTogglingDuty] = useState(false);
 
   const [formData, setFormData] = useState({
     fullname: userData?.fullname || "",
@@ -105,13 +111,30 @@ const Profile = () => {
     return badges[role] || badges.user;
   };
 
+
+  const toggleDutyStatus = async () => {
+    setIsTogglingDuty(true);
+    try {
+      const res = await axios.post(`${serverUrl}/api/user/toggle-duty`, {}, { withCredentials: true });
+      if (res.data.success) {
+        dispatch(setUserData({ ...userData, isDutyOn: res.data.isDutyOn }));
+        toast.success(`Duty is now ${res.data.isDutyOn ? 'ON' : 'OFF'}`);
+      }
+    } catch (err) {
+      toast.error("Failed to toggle duty status");
+    } finally {
+      setIsTogglingDuty(false);
+    }
+  };
+
+
   const roleBadge = getRoleBadge(userData?.role);
   
   if (!userData) {
     return (
       <div className="min-h-screen bg-bg-secondary">
         <Nav />
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-20">
           <ProfileSkeleton />
         </div>
       </div>
@@ -122,7 +145,7 @@ const Profile = () => {
     <div className="min-h-screen relative bg-bg-secondary text-text-primary pb-20">
       <Nav />
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20 relative z-10">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-20 relative z-10">
 
         {/* ── HEADER ── */}
         <header className="mb-10">
@@ -318,51 +341,96 @@ const Profile = () => {
 
         {/* ── OWNER EXCLUSIVE: SHOP CONTROL ── */}
         {userData?.role === 'owner' && (
-          <div className="mt-8 bg-bg-card border border-border rounded-[2.5rem] p-10 overflow-hidden relative group/shop shadow-sm">
-            <div className="absolute inset-0 bg-gradient-to-br from-brand/5 to-transparent pointer-events-none" />
+          <div className="space-y-8 mt-8">
+            <div className="bg-bg-card border border-border rounded-[2.5rem] p-10 overflow-hidden relative group/shop shadow-sm">
+              <div className="absolute inset-0 bg-gradient-to-br from-brand/5 to-transparent pointer-events-none" />
 
-            {myShopData ? (
-              <div className="flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
-                <div className="flex items-center gap-6">
-                  <div className="w-20 h-20 rounded-3xl overflow-hidden border border-border bg-bg-secondary shrink-0 shadow-inner">
-                    <img src={myShopData.image} alt="" className="w-full h-full object-cover" />
-                  </div>
-                  <div>
-                    <h3 className="text-2xl font-black text-text-primary tracking-tight uppercase italic">{myShopData.name}</h3>
-                    <div className={`mt-2 inline-flex items-center gap-2 px-4 py-1.5 rounded-full border shop-status-badge ${myShopData.isOpen ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-red-500/10 border-red-500/20 text-red-400'}`}>
-                      <div className={`w-1.5 h-1.5 rounded-full ${myShopData.isOpen ? 'bg-emerald-500 animate-pulse' : 'bg-red-500'}`} />
-                      <span className="text-[10px] font-black uppercase tracking-widest">{myShopData.isOpen ? 'Shop is Open' : 'Shop is Closed'}</span>
+              {myShopData ? (
+                <div className="flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
+                  <div className="flex items-center gap-6">
+                    <div className="w-20 h-20 rounded-3xl overflow-hidden border border-border bg-bg-secondary shrink-0 shadow-inner">
+                      <img src={myShopData.image} alt="" className="w-full h-full object-cover" />
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-black text-text-primary tracking-tight uppercase italic">{myShopData.name}</h3>
+                      <div className={`mt-2 inline-flex items-center gap-2 px-4 py-1.5 rounded-full border shop-status-badge ${myShopData.isOpen ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-red-500/10 border-red-500/20 text-red-400'}`}>
+                        <div className={`w-1.5 h-1.5 rounded-full ${myShopData.isOpen ? 'bg-emerald-500 animate-pulse' : 'bg-red-500'}`} />
+                        <span className="text-[10px] font-black uppercase tracking-widest">{myShopData.isOpen ? 'Shop is Open' : 'Shop is Closed'}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
+                  <div className="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
+                    <button
+                      onClick={() => navigate('/create-edit-shop')}
+                      className="w-full sm:w-auto h-14 px-8 bg-bg-card border border-border rounded-2xl font-black text-[11px] uppercase tracking-widest hover:bg-bg-secondary transition-all shadow-sm"
+                    >
+                      Manage Details
+                    </button>
+                    <button
+                      onClick={toggleShopStatus}
+                      className={`w-full sm:w-auto h-14 px-10 rounded-2xl font-black text-[11px] uppercase tracking-widest transition-all duration-500 ${myShopData.isOpen ? 'bg-text-primary text-white hover:bg-black' : 'primary-button shadow-lg'}`}
+                    >
+                      {myShopData.isOpen ? 'Close For Today' : 'Open Shop Now'}
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="text-center relative z-10 py-6">
+                  <h3 className="text-xl font-black text-text-primary mb-2">No Shop Registered</h3>
+                  <p className="text-text-secondary text-sm font-medium mb-6">Create your shop first to manage open/close status.</p>
                   <button
                     onClick={() => navigate('/create-edit-shop')}
-                    className="w-full sm:w-auto h-14 px-8 bg-bg-card border border-border rounded-2xl font-black text-[11px] uppercase tracking-widest hover:bg-bg-secondary transition-all shadow-sm"
+                    className="primary-button h-12 px-8 rounded-2xl font-bold text-[13px]"
                   >
-                    Manage Details
-                  </button>
-                  <button
-                    onClick={toggleShopStatus}
-                    className={`w-full sm:w-auto h-14 px-10 rounded-2xl font-black text-[11px] uppercase tracking-widest transition-all duration-500 ${myShopData.isOpen ? 'bg-text-primary text-white hover:bg-black' : 'primary-button shadow-lg'}`}
-                  >
-                    {myShopData.isOpen ? 'Close For Today' : 'Open Shop Now'}
+                    Create Your Shop
                   </button>
                 </div>
+              )}
+            </div>
+
+          </div>
+        )}
+
+        {/* ── DELIVERY BOY EXCLUSIVE: DUTY CONTROL ── */}
+        {userData?.role === 'deliveryBoy' && (
+          <div className="mt-8 bg-bg-card border border-border rounded-[2.5rem] p-10 overflow-hidden relative group/duty shadow-sm">
+            <div className="absolute inset-0 bg-gradient-to-br from-fuchsia-500/5 to-transparent pointer-events-none" />
+            
+            <div className="flex flex-col md:flex-row items-center justify-between gap-8 relative z-10">
+              <div className="flex items-center gap-6">
+                <div className={`w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-500 ${userData?.isDutyOn ? 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20' : 'bg-bg-secondary text-text-muted border border-border'}`}>
+                  {userData?.isDutyOn ? <Zap size={28} className="animate-pulse" /> : <Power size={28} />}
+                </div>
+                <div>
+                  <h3 className="text-2xl font-black text-text-primary tracking-tight">Duty Status</h3>
+                  <div className={`mt-2 inline-flex items-center gap-2 px-4 py-1.5 rounded-full border ${userData?.isDutyOn ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' : 'bg-zinc-500/10 border-zinc-500/20 text-zinc-400'}`}>
+                    <div className={`w-1.5 h-1.5 rounded-full ${userData?.isDutyOn ? 'bg-emerald-500 animate-pulse' : 'bg-zinc-500'}`} />
+                    <span className="text-[10px] font-black uppercase tracking-widest">{userData?.isDutyOn ? 'Active & Receiving Orders' : 'Offline / On Break'}</span>
+                  </div>
+                </div>
               </div>
-            ) : (
-              <div className="text-center relative z-10 py-6">
-                <h3 className="text-xl font-black text-text-primary mb-2">No Shop Registered</h3>
-                <p className="text-text-secondary text-sm font-medium mb-6">Create your shop first to manage open/close status.</p>
+
+              <div className="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
                 <button
-                  onClick={() => navigate('/create-edit-shop')}
-                  className="primary-button h-12 px-8 rounded-2xl font-bold text-[13px]"
+                  onClick={() => navigate('/delivery-dashboard')}
+                  className="w-full sm:w-auto h-14 px-8 bg-bg-card border border-border rounded-2xl font-black text-[11px] uppercase tracking-widest hover:bg-bg-secondary transition-all shadow-sm"
                 >
-                  Create Your Shop
+                  View Dashboard
+                </button>
+                <button
+                  onClick={toggleDutyStatus}
+                  disabled={isTogglingDuty}
+                  className={`w-full sm:w-auto h-14 px-10 rounded-2xl font-black text-[11px] uppercase tracking-widest transition-all duration-500 disabled:opacity-50 ${userData?.isDutyOn ? 'bg-text-primary text-white hover:bg-black' : 'primary-button shadow-lg'}`}
+                >
+                  {isTogglingDuty ? (
+                    <ClipLoader size={18} color="currentColor" />
+                  ) : (
+                    userData?.isDutyOn ? 'Go Offline' : 'Start Duty Now'
+                  )}
                 </button>
               </div>
-            )}
+            </div>
           </div>
         )}
       </div>

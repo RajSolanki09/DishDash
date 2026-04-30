@@ -99,10 +99,10 @@ const OwnerItemCard = ({ data }) => {
   };
 
   return (
-    <div className="group premium-card p-5 gap-6 flex relative">
+    <div className="group premium-card p-3 sm:p-5 gap-3 sm:gap-6 flex relative overflow-hidden">
 
       {/* Image */}
-      <div className="w-28 h-28 sm:w-36 sm:h-36 flex-shrink-0 overflow-hidden rounded-2xl border border-border bg-bg-secondary aspect-square">
+      <div className="w-24 h-24 sm:w-36 sm:h-36 flex-shrink-0 overflow-hidden rounded-2xl border border-border bg-bg-secondary aspect-square">
         <img
           src={data?.image}
           alt={data?.name}
@@ -112,47 +112,47 @@ const OwnerItemCard = ({ data }) => {
 
       {/* Content */}
       <div className="flex flex-col justify-between flex-grow min-w-0 py-1">
-        <div className="flex justify-between items-start gap-4">
-          <h2 className="text-lg sm:text-xl font-bold text-text-primary capitalize leading-tight truncate">
+        <div className="flex justify-between items-start gap-2">
+          <h2 className="text-[15px] sm:text-xl font-black text-text-primary capitalize leading-tight truncate pr-2">
             {data?.name}
           </h2>
 
-          <div className="flex gap-2 shrink-0">
+          <div className="flex gap-1.5 shrink-0">
             <button
               onClick={() => navigate(`/edit-item/${data?._id}`)}
-              className="w-9 h-9 rounded-xl flex items-center justify-center bg-bg-secondary border border-border text-text-muted hover:text-brand hover:bg-brand/10 hover:border-brand transition-all duration-300 active:scale-90"
+              className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center bg-bg-secondary border border-border text-text-muted hover:text-brand hover:bg-brand/10 hover:border-brand transition-all duration-300 active:scale-90"
             >
-              <Pencil size={15} />
+              <Pencil size={14} />
             </button>
 
             <button
               onClick={() => setShowDeleteModal(true)}
-              className="w-9 h-9 rounded-xl flex items-center justify-center bg-bg-secondary border border-border text-text-muted hover:text-red-500 hover:bg-red-500/10 hover:border-red-500 transition-all duration-300 active:scale-90"
+              className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center bg-bg-secondary border border-border text-text-muted hover:text-red-500 hover:bg-red-500/10 hover:border-red-500 transition-all duration-300 active:scale-90"
             >
-              <Trash2 size={15} />
+              <Trash2 size={14} />
             </button>
           </div>
         </div>
 
-        <div className="flex items-end justify-between mt-auto">
-          <div>
-            <span className="text-caption text-text-muted block mb-1">
+        <div className="flex flex-wrap items-end justify-between mt-auto gap-y-3 gap-x-2">
+          <div className="shrink-0 min-w-[70px]">
+            <span className="text-[10px] font-black text-text-muted uppercase tracking-widest block mb-0.5">
               Price
             </span>
-            <div className="text-2xl font-black text-brand">
+            <div className="text-xl sm:text-2xl font-black text-brand tracking-tighter">
               ₹{data?.price}
             </div>
           </div>
           
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2">
              <button 
                 onClick={toggleAvailability}
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-caption transition-all duration-300 border ${data.isAvailable ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600' : 'bg-red-500/10 border-red-500/20 text-red-500'}`}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[9px] sm:text-[11px] font-black uppercase tracking-widest transition-all duration-300 border ${data.isAvailable ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600' : 'bg-red-500/10 border-red-500/20 text-red-500'}`}
              >
                 <div className={`w-1.5 h-1.5 rounded-full ${data.isAvailable ? 'bg-emerald-500' : 'bg-red-500'}`} />
-                {data.isAvailable ? 'In Stock' : 'Out of Stock'}
+                {data.isAvailable ? 'In Stock' : 'Out Stock'}
              </button>
-             <div className="text-caption text-brand bg-brand/10 border border-brand/20 px-3 py-1.5 rounded-lg">
+             <div className="text-[9px] sm:text-[11px] font-black uppercase tracking-widest text-brand bg-brand/10 border border-brand/20 px-2.5 py-1.5 rounded-lg">
                 {data?.category || "Item"}
              </div>
           </div>

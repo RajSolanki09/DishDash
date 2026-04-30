@@ -45,6 +45,7 @@ const Shop = lazy(() => import("./pages/Shop"));
 const Favorites = lazy(() => import("./pages/Favorites"));
 const DeliveryBoy = lazy(() => import("./components/DeliveryBoy"));
 const DeliveryDashboard = lazy(() => import("./pages/Deliverydashboard"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 export const serverUrl = defaultBaseUrl;
 
@@ -181,6 +182,7 @@ const App = () => {
           path="/favorites"
           element={userData ? <PageLoader><Favorites /></PageLoader> : <Navigate to="/signin" />}
         />
+        <Route path="*" element={<PageLoader><NotFound /></PageLoader>} />
       </Routes>
     </ErrorBoundary>
   );
