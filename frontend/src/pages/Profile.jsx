@@ -22,6 +22,7 @@ import { setUserData } from "../redux/userSlice";
 import { setMyShopData } from "../redux/ownerSlice";
 import useGetMyShop from "../hooks/useGetMyShop";
 import gsap from "gsap";
+import { ProfileSkeleton } from "../components/Skeleton";
 
 const Profile = () => {
   useGetMyShop();
@@ -105,6 +106,17 @@ const Profile = () => {
   };
 
   const roleBadge = getRoleBadge(userData?.role);
+  
+  if (!userData) {
+    return (
+      <div className="min-h-screen bg-bg-secondary">
+        <Nav />
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20">
+          <ProfileSkeleton />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen relative bg-bg-secondary text-text-primary pb-20">

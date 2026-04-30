@@ -7,6 +7,7 @@ import FoodCart from "./FoodCart.jsx";
 import CategoryCard from "./CategoryCard.jsx";
 import { useNavigate } from "react-router-dom";
 import gsap from "gsap";
+import { PageSkeleton } from "./Skeleton.jsx";
 
 const UserDashboard = () => {
   const cateScrollRef = useRef();
@@ -73,6 +74,10 @@ const UserDashboard = () => {
     displayItems = searchResults;
   } else if (itemsInMyCity) {
     displayItems = itemsInMyCity.filter((item) => (selectedCategory === "All" ? true : item.category === selectedCategory));
+  }
+  
+  if (!shopsInMyCity || !itemsInMyCity) {
+    return <PageSkeleton />;
   }
 
   return (

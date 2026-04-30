@@ -98,4 +98,34 @@ export const ProfileSkeleton = () => (
   </div>
 );
 
+export const ShopSkeleton = () => (
+  <div className="min-h-screen bg-bg-secondary">
+    <div className="h-20 bg-bg-card border-b border-border mb-8" />
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <Skeleton className="h-10 w-32 mb-8" />
+      <div className="bg-bg-card rounded-3xl border border-border overflow-hidden mb-10">
+        <Skeleton className="h-64 md:h-80 w-full" />
+        <div className="p-8">
+          <div className="flex justify-between items-start">
+            <div>
+              <Skeleton className="h-10 w-64 mb-4" />
+              <Skeleton className="h-6 w-96" />
+            </div>
+            <Skeleton className="h-20 w-32 rounded-2xl" />
+          </div>
+        </div>
+      </div>
+      <div className="flex gap-2 mb-8">
+        <Skeleton className="h-12 w-32 rounded-xl" />
+        <Skeleton className="h-12 w-32 rounded-xl" />
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {[...Array(8)].map((_, i) => (
+          <CardSkeleton key={i} />
+        ))}
+      </div>
+    </div>
+  </div>
+);
+
 export default Skeleton;

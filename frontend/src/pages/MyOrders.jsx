@@ -6,6 +6,7 @@ import UserOrderCard from "../components/UserOrderCard";
 import OwnerOrderCard from "../components/OwnerOrderCard";
 import Nav from "../components/Nav";
 import { setMyOrders } from "../redux/userSlice";
+import { OrderSkeleton } from "../components/Skeleton";
 
 function MyOrders() {
   const { userData, myOrders, socket } = useSelector((state) => state.user);
@@ -141,14 +142,10 @@ function MyOrders() {
         <main className="relative z-10">
           {/* Loading */}
           {loading ? (
-            <div className="bg-bg-card border border-border rounded-[2.5rem] py-28 flex flex-col items-center justify-center shadow-sm">
-              <Loader className="animate-spin text-brand relative z-10" size={40} />
-              <p className="text-[10px] font-black text-text-muted uppercase tracking-widest mt-6 relative z-10 animate-pulse">
-                Fetching your orders
-              </p>
-              <p className="text-[12px] text-text-secondary font-bold mt-2 relative z-10 tracking-widest">
-                Just a moment...
-              </p>
+            <div className="space-y-6">
+              {[...Array(4)].map((_, i) => (
+                <OrderSkeleton key={i} />
+              ))}
             </div>
 
           ) : !myOrders || myOrders.length === 0 ? (

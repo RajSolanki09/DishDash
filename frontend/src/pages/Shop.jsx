@@ -8,6 +8,7 @@ import { MapPin, Star, ArrowLeft, Ghost, Clock, ChefHat, Store } from "lucide-re
 import { ClipLoader } from "react-spinners";
 import gsap from "gsap";
 import ReviewList from "../components/ReviewList";
+import { ShopSkeleton } from "../components/Skeleton";
 
 const Shop = () => {
   const { shopId } = useParams();
@@ -41,12 +42,7 @@ const Shop = () => {
   }, [loading, data]);
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-bg-secondary">
-        <ClipLoader size={40} color="#E23744" speedMultiplier={0.8} />
-        <p className="text-[13px] font-bold text-text-muted mt-5">Loading restaurant...</p>
-      </div>
-    );
+    return <ShopSkeleton />;
   }
 
   if (!data.shop) {
